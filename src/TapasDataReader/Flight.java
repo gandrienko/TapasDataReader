@@ -3,7 +3,7 @@ package TapasDataReader;
 import java.util.TreeSet;
 
 public class Flight {
-  String id;
+  public String id;
   public int delays[]=null;
   public Flight (String id, TreeSet<Integer> steps) {
     this.id=id;
