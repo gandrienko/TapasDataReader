@@ -1,8 +1,8 @@
 package TapasDataReader;
 
 public class Record {
-  String sector, flight, FromS, ToS, FromT, ToT;
-  int step, delay, FromN, ToN;
+  public String sector, flight, FromS, ToS, FromT, ToT;
+  public int step, delay, FromN, ToN;
 
   protected int calc(String s) {
     int n=Integer.valueOf(s.substring(0,2)).intValue()*60+Integer.valueOf(s.substring(3,5)).intValue();
