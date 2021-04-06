@@ -19,8 +19,10 @@ public class Readers {
           String str=strLine.replaceAll(" ","");
           String[] tokens=str.split(",");
           String s=tokens[0];
-          Integer capacity=Integer.valueOf(tokens[1]);
-          capacities.put(s,capacity);
+          if (!s.equals("NONE") && !s.equals("NULL")) {
+            Integer capacity = Integer.valueOf(tokens[1]);
+            capacities.put(s, capacity);
+          }
         }
         br.close();
       } catch  (IOException io) {}
@@ -116,6 +118,7 @@ public class Readers {
                 Record r=new Record();
                 r.flight=id;
                 r.sector=tokens[i];
+                r.delay=delay;
                 if (i>columnSector)
                   r.FromS=tokens[i-1];
                 else
