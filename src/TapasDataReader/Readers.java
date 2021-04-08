@@ -151,7 +151,7 @@ public class Readers {
                 }
           }
           N++;
-          if (N % 200 == 0)
+          if (N % 10000 == 0)
             System.out.println("* flights: "+M+" flights in "+N+" flightplans lines processed, "+K+" outputs recorded");
         }
         br.close();
