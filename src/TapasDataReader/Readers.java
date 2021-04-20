@@ -177,7 +177,7 @@ public class Readers {
       try {
         String header=br.readLine();
         int columnFlightID=countCommas(header.substring(0,header.indexOf("FlightID"))),
-                columnDelays=countCommas(header.substring(0,header.indexOf("Delays"))),
+                columnDelays=(header.indexOf("Delays")==-1) ? -1 : countCommas(header.substring(0,header.indexOf("Delays"))),
                 columnSector=countCommas(header.substring(0,header.indexOf("Sector_0"))),
                 columnEntryTime=countCommas(header.substring(0,header.indexOf("EntryTime_0")));
         //String[] columns=header.split(",");
@@ -187,7 +187,7 @@ public class Readers {
           String str=strLine.replaceAll(" ","");
           String[] tokens=str.split(",");
           String id=tokens[columnFlightID];
-          int delay=Integer.valueOf(tokens[columnDelays]);
+          int delay=(columnDelays==-1) ? 0 : Integer.valueOf(tokens[columnDelays]);
           Vector<Record> vr=new Vector<Record>(columnEntryTime-columnSector);
           for (int i=columnSector; i<columnEntryTime; i++)
             if (tokens[i].equals("NULL") || tokens[i].equals("NONE"))
