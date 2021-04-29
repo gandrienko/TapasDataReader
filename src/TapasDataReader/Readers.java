@@ -236,6 +236,41 @@ public class Readers {
     return records;
   }
 
+  public static void readExplanatios (String path, Hashtable<String,Flight> flights) {
+    File folder = new File(path+"VA");
+    File[] listOfFiles = folder.listFiles();
+    for (int i=0; i<listOfFiles.length; i++)
+      if (listOfFiles[i] != null) {
+        String fn=listOfFiles[i].getName();
+        if (fn.startsWith("xaiQ")) {
+          int fN=Integer.valueOf(fn.substring(4,6)).intValue();
+          System.out.println(i + ". " + fn+", N="+fN);
+          try {
+            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(listOfFiles[i])));
+            try {
+              String strLine=br.readLine();
+              int stepColN=getFieldN(strLine,"Step"),
+                  flightColN=getFieldN(strLine,"FlightID"),
+                  actionColN=getFieldN(strLine,"Action"),
+                  qColN=getFieldN(strLine,"Q"),
+                  explColN=getFieldN(strLine,"Expl1");
+
+              while ((strLine = br.readLine()) != null) {
+                String str=strLine.replaceAll(" ","");
+                String[] tokens=str.split(",");
+                if (Integer.valueOf(tokens[actionColN]).intValue()==fN) { // explanation corresponds to the action taken
+
+                }
+              }
+              br.close();
+            } catch  (IOException io) {}
+          } catch (FileNotFoundException ex) {System.out.println("problem reading explanations from "+listOfFiles[i].getPath());}
+
+      }
+      }
+
+  }
+
   protected static int countCommas (String str) {
     int n=0;
     for (int i=0; i<str.length(); i++)
