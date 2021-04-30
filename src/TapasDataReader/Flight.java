@@ -13,7 +13,7 @@ public class Flight {
       delays[i]=0;
   }
   public void createExpl() {
-    expl=new Explanation[delays.length];
+    expl=new Explanation[delays.length]; // same as steps.size(), see constructor
     for (int i=0; i<expl.length; i++)
       expl[i]=null;
   }

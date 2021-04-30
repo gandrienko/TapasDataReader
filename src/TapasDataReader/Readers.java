@@ -236,7 +236,7 @@ public class Readers {
     return records;
   }
 
-  public static void readExplanatios (String path, Hashtable<String,Flight> flights) {
+  public static void readExplanations(String path, TreeSet<Integer> steps, Hashtable<String,Flight> flights) {
     File folder = new File(path+"VA");
     File[] listOfFiles = folder.listFiles();
     int N=0, Nprev=0;
@@ -278,6 +278,14 @@ public class Readers {
                     item.interval[0]=(inttokens[0].contains("inf")) ? Double.NEGATIVE_INFINITY : Double.valueOf(inttokens[0]).doubleValue();
                     item.interval[1]=(inttokens[1].contains("inf")) ? Double.POSITIVE_INFINITY : Double.valueOf(inttokens[1]).doubleValue();
                   }
+                  Flight flight=flights.get(explanation.FlightID);
+                  if (flight==null)
+                    System.out.println("\n*** flight "+explanation.FlightID+" is not found");
+                  else {
+                    if (flight.expl==null)
+                      flight.createExpl();
+                    flight.expl[steps.headSet(new Integer(tokens[stepColN])).size()]=explanation;
+                  }
                   N++;
                 }
               }
@@ -286,10 +294,8 @@ public class Readers {
               Nprev=N;
             } catch  (IOException io) {}
           } catch (FileNotFoundException ex) {System.out.println("problem reading explanations from "+listOfFiles[i].getPath());}
-
+        }
       }
-      }
-
   }
 
   protected static int countCommas (String str) {
