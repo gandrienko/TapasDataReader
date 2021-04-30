@@ -239,12 +239,13 @@ public class Readers {
   public static void readExplanatios (String path, Hashtable<String,Flight> flights) {
     File folder = new File(path+"VA");
     File[] listOfFiles = folder.listFiles();
+    int N=0, Nprev=0;
     for (int i=0; i<listOfFiles.length; i++)
       if (listOfFiles[i] != null) {
         String fn=listOfFiles[i].getName();
         if (fn.startsWith("xaiQ")) {
           int fN=Integer.valueOf(fn.substring(4,6)).intValue();
-          System.out.println(i + ". " + fn+", N="+fN);
+          System.out.print("* Explanations: processing "+fn+", N="+fN);
           try {
             BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(listOfFiles[i])));
             try {
@@ -277,9 +278,12 @@ public class Readers {
                     item.interval[0]=(inttokens[0].contains("inf")) ? Double.NEGATIVE_INFINITY : Double.valueOf(inttokens[0]).doubleValue();
                     item.interval[1]=(inttokens[1].contains("inf")) ? Double.POSITIVE_INFINITY : Double.valueOf(inttokens[1]).doubleValue();
                   }
+                  N++;
                 }
               }
               br.close();
+              System.out.println(", "+N+" explanations recorded"+((Nprev==0)?"":" ("+(N-Nprev)+" added)"));
+              Nprev=N;
             } catch  (IOException io) {}
           } catch (FileNotFoundException ex) {System.out.println("problem reading explanations from "+listOfFiles[i].getPath());}
 
