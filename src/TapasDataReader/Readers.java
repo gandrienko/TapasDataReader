@@ -253,7 +253,7 @@ public class Readers {
                   flightColN=getFieldN(strLine,"FlightID"),
                   actionColN=getFieldN(strLine,"Action"),
                   qColN=getFieldN(strLine,"Q"),
-                  explColN=getFieldN(strLine,"Expl1");
+                  explColN=getFieldN(strLine,"Exp1");
 
               while ((strLine = br.readLine()) != null) {
                 String str=strLine.replaceAll(" ","");
@@ -264,15 +264,18 @@ public class Readers {
                   explanation.step=tokens[stepColN];
                   explanation.action=fN;
                   explanation.Q=Double.valueOf(tokens[qColN]).floatValue();
-                  explanation.eItems=new Vector<ExplanationItem>(tokens.length-explColN+1);
+                  explanation.eItems=new ExplanationItem[tokens.length-explColN+1];
                   for (int ei=explColN; ei<tokens.length; ei++) {
                     ExplanationItem item=new ExplanationItem();
-                    String itokens[]=tokens[ei].split(":");
+                    explanation.eItems[ei-explColN]=item;
+                    String eitokens[]=tokens[ei].split(":");
                     item.level=ei-explColN;
-                    item.attr=itokens[0];
-                    item.sector=itokens[1];
-                    item.value=Double.valueOf(itokens[2]).floatValue();
-                    //item.interval
+                    item.attr=eitokens[0];
+                    item.sector=eitokens[1];
+                    item.value=Double.valueOf(eitokens[2]).floatValue();
+                    String inttokens[]=eitokens[3].split(";");
+                    item.interval[0]=(inttokens[0].contains("inf")) ? Double.NEGATIVE_INFINITY : Double.valueOf(inttokens[0]).doubleValue();
+                    item.interval[1]=(inttokens[1].contains("inf")) ? Double.POSITIVE_INFINITY : Double.valueOf(inttokens[1]).doubleValue();
                   }
                 }
               }

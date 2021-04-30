@@ -10,5 +10,5 @@ public class Explanation {
   String FlightID, step;
   int action;
   float Q;
-  Vector<ExplanationItem> eItems;
+  ExplanationItem eItems[];
 }
