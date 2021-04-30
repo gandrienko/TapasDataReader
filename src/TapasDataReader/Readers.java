@@ -259,7 +259,21 @@ public class Readers {
                 String str=strLine.replaceAll(" ","");
                 String[] tokens=str.split(",");
                 if (Integer.valueOf(tokens[actionColN]).intValue()==fN) { // explanation corresponds to the action taken
-
+                  Explanation explanation=new Explanation();
+                  explanation.FlightID=tokens[flightColN];
+                  explanation.step=tokens[stepColN];
+                  explanation.action=fN;
+                  explanation.Q=Double.valueOf(tokens[qColN]).floatValue();
+                  explanation.eItems=new Vector<ExplanationItem>(tokens.length-explColN+1);
+                  for (int ei=explColN; ei<tokens.length; ei++) {
+                    ExplanationItem item=new ExplanationItem();
+                    String itokens[]=tokens[ei].split(":");
+                    item.level=ei-explColN;
+                    item.attr=itokens[0];
+                    item.sector=itokens[1];
+                    item.value=Double.valueOf(itokens[2]).floatValue();
+                    //item.interval
+                  }
                 }
               }
               br.close();
