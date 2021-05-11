@@ -7,8 +7,8 @@ import java.util.Vector;
  * to save memory, step and flight id are not recorder here (to be deleted from here after debugging)
  */
 public class Explanation {
-  String FlightID, step;
-  int action;
-  float Q;
-  ExplanationItem eItems[];
+  public String FlightID, step;
+  public int action;
+  public float Q;
+  public ExplanationItem eItems[];
 }
