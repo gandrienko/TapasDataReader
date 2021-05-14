@@ -10,8 +10,10 @@ public class Explanation {
   public String FlightID, step;
   public int action;
   public float Q;
-  public ExplanationItem eItems[];
+  public ExplanationItem eItems[]=null, eItemsCombined[]=null;
   public ExplanationItem[] getExplItemsCombined() {
+    if (eItemsCombined!=null)
+      return eItemsCombined;
     if (eItems==null || eItems.length==0)
       return null;
     Vector<ExplanationItem> vei=new Vector<ExplanationItem>(eItems.length);
@@ -32,9 +34,9 @@ public class Explanation {
         e.interval[1]=Math.min(e.interval[1],eItems[i].interval[1]);
       }
     }
-    ExplanationItem ei[]=new ExplanationItem[vei.size()];
+    eItemsCombined=new ExplanationItem[vei.size()];
     for (int i=0; i<vei.size(); i++)
-      ei[i]=vei.elementAt(i);
-    return ei;
+      eItemsCombined[i]=vei.elementAt(i);
+    return eItemsCombined;
   }
 }
