@@ -11,4 +11,27 @@ public class Explanation {
   public int action;
   public float Q;
   public ExplanationItem eItems[];
+  public ExplanationItem[] getExplItemsCombined() {
+    if (eItems==null || eItems.length==0)
+      return null;
+    Vector<ExplanationItem> vei=new Vector<ExplanationItem>(eItems.length);
+    vei.add(eItems[0]);
+    for (int i=1; i<eItems.length; i++) {
+      int n=-1;
+      for (int j=0; n==-1 && j<i; j++)
+        if (vei.elementAt(j).attr.equals(eItems[i].attr))
+          n=j;
+      if (n==-1) // add Ith condition to the explanatio
+        vei.add(eItems[i]);
+      else { // combine Nth and Ith conditions
+        ExplanationItem e=vei.elementAt(n);
+        e.interval[0]=Math.max(e.interval[0],eItems[i].interval[0]);
+        e.interval[1]=Math.max(e.interval[1],eItems[i].interval[1]);
+      }
+    }
+    ExplanationItem ei[]=new ExplanationItem[vei.size()];
+    for (int i=0; i<vei.size(); i++)
+      ei[i]=vei.elementAt(i);
+    return ei;
+  }
 }
