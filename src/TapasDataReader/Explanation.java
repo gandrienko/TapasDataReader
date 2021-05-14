@@ -26,7 +26,7 @@ public class Explanation {
       else { // combine Nth and Ith conditions
         ExplanationItem e=vei.elementAt(n);
         e.interval[0]=Math.max(e.interval[0],eItems[i].interval[0]);
-        e.interval[1]=Math.max(e.interval[1],eItems[i].interval[1]);
+        e.interval[1]=Math.min(e.interval[1],eItems[i].interval[1]);
       }
     }
     ExplanationItem ei[]=new ExplanationItem[vei.size()];
