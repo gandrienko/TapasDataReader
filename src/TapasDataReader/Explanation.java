@@ -16,9 +16,12 @@ public class Explanation {
       return null;
     Vector<ExplanationItem> vei=new Vector<ExplanationItem>(eItems.length);
     vei.add(eItems[0]);
-    for (int i=1; i<eItems.length; i++) {
+    for (int i=1; i<eItems.length; i++)
+    if (eItems[i]==null)
+      System.out.println("null eItem, flight "+FlightID+", step = "+step);
+    else {
       int n=-1;
-      for (int j=0; n==-1 && j<i; j++)
+      for (int j=0; n==-1 && j<vei.size(); j++)
         if (vei.elementAt(j).attr.equals(eItems[i].attr))
           n=j;
       if (n==-1) // add Ith condition to the explanatio

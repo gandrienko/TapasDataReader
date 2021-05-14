@@ -265,7 +265,7 @@ public class Readers {
                   explanation.step=tokens[stepColN];
                   explanation.action=fN;
                   explanation.Q=Double.valueOf(tokens[qColN]).floatValue();
-                  explanation.eItems=new ExplanationItem[tokens.length-explColN+1];
+                  explanation.eItems=new ExplanationItem[tokens.length-explColN];
                   for (int ei=explColN; ei<tokens.length; ei++) {
                     ExplanationItem item=new ExplanationItem();
                     explanation.eItems[ei-explColN]=item;
