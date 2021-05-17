@@ -236,7 +236,7 @@ public class Readers {
     return records;
   }
 
-  public static void readExplanations(String path, TreeSet<Integer> steps, Hashtable<String,Flight> flights) {
+  public static void readExplanations(String path, TreeSet<Integer> steps, Hashtable<String,Flight> flights, Hashtable<String,int[]> attrs) {
     File folder = new File(path+"VA");
     File[] listOfFiles = folder.listFiles();
     int N=0, Nprev=0;
@@ -274,6 +274,21 @@ public class Readers {
                     item.attr=eitokens[0];
                     item.sector=eitokens[1];
                     item.value=Double.valueOf(eitokens[2]).floatValue();
+                    int minmax[]=attrs.get(item.attr);
+                    if (minmax==null) {
+                      minmax=new int[2];
+                      minmax[0]=Integer.MAX_VALUE;
+                      minmax[1]=0;
+                    }
+                    if (item.value<minmax[0])
+                      minmax[0]=(int)item.value;
+                    if (item.value>minmax[1])
+                      minmax[1]=(int)item.value;
+                    attrs.put(item.attr,minmax);
+                    if (item.value<0)
+                      System.out.println("* panic: negative value "+item.value+", attr="+item.attr+", fl="+explanation.FlightID+",step="+explanation.step);
+                    if (item.value!=Math.round(item.value))
+                      System.out.println("* panic: non-int value "+item.value+", attr="+item.attr+", fl="+explanation.FlightID+",step="+explanation.step);
                     String inttokens[]=eitokens[3].split(";");
                     item.interval[0]=(inttokens[0].contains("inf")) ? Double.NEGATIVE_INFINITY : Double.valueOf(inttokens[0]).doubleValue();
                     item.interval[1]=(inttokens[1].contains("inf")) ? Double.POSITIVE_INFINITY : Double.valueOf(inttokens[1]).doubleValue();

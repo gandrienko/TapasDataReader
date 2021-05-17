@@ -8,4 +8,16 @@ public class ExplanationItem {
   public String sector; // if present, otherwise null
   public float value;
   public double interval[]={Double.NEGATIVE_INFINITY,Double.POSITIVE_INFINITY}; // min..max; either min or max is +-inf
+
+  public ExplanationItem clone() {
+    ExplanationItem ei=new ExplanationItem();
+    ei.level=this.level;
+    ei.value=this.value;
+    ei.interval=this.interval.clone();
+    ei.attr=this.attr;
+    ei.attr_core=this.attr_core;
+    ei.attr_N=this.attr_N;
+    ei.sector=this.sector;
+    return ei;
+  }
 }
