@@ -17,7 +17,7 @@ public class Explanation {
     if (ei==null || ei.length==0)
       return null;
     Vector<ExplanationItem> vei=new Vector<ExplanationItem>(ei.length);
-    vei.add(ei[0]);
+    vei.add(ei[0].clone());
     for (int i=1; i<ei.length; i++)
     if (ei[i]==null)
       System.out.println("null eItem, flight "+FlightID+", step = "+step);
@@ -26,8 +26,8 @@ public class Explanation {
       for (int j=0; n==-1 && j<vei.size(); j++)
         if (vei.elementAt(j).attr.equals(ei[i].attr))
           n=j;
-      if (n==-1) // add Ith condition to the explanatio
-        vei.add(ei[i]);
+      if (n==-1) // add Ith condition to the explanation
+        vei.add(ei[i].clone());
       else { // combine Nth and Ith conditions
         ExplanationItem e=vei.elementAt(n);
         e.interval[0]=Math.max(e.interval[0],ei[i].interval[0]);
@@ -49,6 +49,7 @@ public class Explanation {
       int minmax[]=attrs.get(ei[i].attr);
       eii[i].interval[0]=Math.max(minmax[0],Math.ceil(ei[i].interval[0]));
       eii[i].interval[1]=Math.min(minmax[1],Math.floor(ei[i].interval[1]));
+      eii[i].isInteger=true;
     }
     return eii;
   }
