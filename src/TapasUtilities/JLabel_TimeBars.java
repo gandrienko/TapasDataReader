@@ -19,7 +19,7 @@ public class JLabel_TimeBars extends JLabel {
     g.setColor(getBackground());
     g.fillRect(0,0,getWidth(),getHeight());
     if (v!=null && v.length>0) {
-      g.setColor(Color.lightGray);
+      g.setColor(getForeground());
       for (int i = 0; i < v.length; i++)
         if (v[i] > 0) {
           int x = (int) Math.round(1f * getWidth() * i / v.length);

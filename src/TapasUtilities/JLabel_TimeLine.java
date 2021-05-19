@@ -24,7 +24,7 @@ public class JLabel_TimeLine extends JLabel {
         x[1+i]=(int)Math.round(getWidth()*(1f*i/(v.length-1)));
         y[1+i]=(int)Math.round(getHeight()*(1-1f*v[i]/max));
       }
-      g.setColor(Color.lightGray);
+      g.setColor(getForeground());
       g.fillPolygon(x, y, x.length);
     }
     super.paint(g);

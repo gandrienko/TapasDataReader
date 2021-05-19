@@ -11,10 +11,14 @@ public class RenderLabelTimeLine extends JLabel_TimeLine implements TableCellRen
   }
   public Component getTableCellRendererComponent (JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
     setValue((int[])value);
-    if (isSelected)
+    if (isSelected) {
+      setForeground(Color.black);
       setBackground(table.getSelectionBackground());
-    else
+    }
+    else {
+      setForeground(Color.darkGray);
       setBackground(table.getBackground());
+    }
     return this;
   }
 }
