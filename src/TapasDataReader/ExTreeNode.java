@@ -2,6 +2,7 @@ package TapasDataReader;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.TreeSet;
 
 /**
  * Represents a node in an explanation tree (decision tree)
@@ -18,6 +19,12 @@ public class ExTreeNode {
    * How many times this node was used (i.e., occurs in explanations)
    */
   public int nUses=0;
+  /**
+   * The list of solution steps in which this node was used.
+   * Such a list may be created when an explanation tree for a single flight is reconstructed.
+   * In other cases, it be null.
+   */
+  public TreeSet<Integer> steps=null;
   /**
    * How many times different sectors appear in combination with this attribute and this condition
    */
