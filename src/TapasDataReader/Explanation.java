@@ -8,9 +8,10 @@ import java.util.Vector;
  * to save memory, step and flight id are not recorder here (to be deleted from here after debugging)
  */
 public class Explanation {
-  public String FlightID, step;
-  public int action;
-  public float Q;
+  public String FlightID=null;
+  public int step=-1;
+  public int action=-1;
+  public float Q=Float.NaN;
   public ExplanationItem eItems[]=null;
 
   public ExplanationItem[] getExplItemsCombined (ExplanationItem ei[]) {

@@ -93,6 +93,12 @@ public class ExTreeNode {
     sectors.put(sector,n+1);
   }
   
+  public void addStep(int step) {
+    if (steps==null)
+      steps=new TreeSet<Integer>();
+    steps.add(step);
+  }
+  
   public void addChild(ExTreeNode child) {
     if (child==null)
       return;

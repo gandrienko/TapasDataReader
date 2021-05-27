@@ -262,7 +262,9 @@ public class Readers {
                 if (Integer.valueOf(tokens[actionColN]).intValue()==fN) { // explanation corresponds to the action taken
                   Explanation explanation=new Explanation();
                   explanation.FlightID=tokens[flightColN];
-                  explanation.step=tokens[stepColN];
+                  try {
+                    explanation.step = Integer.parseInt(tokens[stepColN]);
+                  } catch (Exception ex) {}
                   explanation.action=fN;
                   explanation.Q=Double.valueOf(tokens[qColN]).floatValue();
                   explanation.eItems=new ExplanationItem[tokens.length-explColN];
