@@ -6,10 +6,10 @@ import java.awt.*;
 
 public class RenderLabelBarChart extends JLabel_BarChart implements TableCellRenderer {
   boolean bModeTimeOfDay=false;
-  float min;
+  float min,max;
   public RenderLabelBarChart(float min, float max) {
     super(min,max);
-    this.min=min;
+    this.min=min; this.max=max;
     setOpaque(false);
   }
   public void setbModeTimeOfDay() { bModeTimeOfDay=true; }
