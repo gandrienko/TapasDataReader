@@ -6,18 +6,27 @@ import java.awt.*;
 
 public class RenderLabelBarChart extends JLabel_BarChart implements TableCellRenderer {
   boolean bModeTimeOfDay=false;
+  float min;
   public RenderLabelBarChart(float min, float max) {
     super(min,max);
+    this.min=min;
     setOpaque(false);
   }
   public void setbModeTimeOfDay() { bModeTimeOfDay=true; }
   public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-    int v=((Integer)value).intValue();
-    setValue(v);
-    if (bModeTimeOfDay)
-      setText(String.format("%02d",v/60)+":"+String.format("%02d",v%60));
+    if (value==null) {
+      setText("");
+      setValue(min-1);
+    }
     else
-      setText(""+v);
+      {
+      int v = ((Integer) value).intValue();
+      setValue(v);
+      if (bModeTimeOfDay)
+        setText(String.format("%02d", v / 60) + ":" + String.format("%02d", v % 60));
+      else
+        setText("" + v);
+    }
     if (isSelected)
       setBackground(table.getSelectionBackground());
     else
