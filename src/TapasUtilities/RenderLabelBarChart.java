@@ -14,7 +14,7 @@ public class RenderLabelBarChart extends JLabel_BarChart implements TableCellRen
   }
   public void setbModeTimeOfDay() { bModeTimeOfDay=true; }
   public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-    if (value==null) {
+    if (value==null || ((Integer) value).intValue()<min || ((Integer) value).intValue()>max) {
       setText("");
       setValue(min-1);
     }
