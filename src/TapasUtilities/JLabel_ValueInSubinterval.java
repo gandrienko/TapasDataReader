@@ -29,7 +29,7 @@ public class JLabel_ValueInSubinterval extends JLabel {
     g.fillRect(x1,getHeight()/2,x2-x1,getHeight()/2);
     g.setColor(Color.black);
     g.drawLine(x,0,x,getHeight());
-    System.out.println("* v="+value+" in ["+int_min+".."+int_max+"] in ["+global_min+".."+global_max+"], x="+x+" in ["+x1+".."+x2+"]; width="+getWidth());
+    //System.out.println("* v="+value+" in ["+int_min+".."+int_max+"] in ["+global_min+".."+global_max+"], x="+x+" in ["+x1+".."+x2+"]; width="+getWidth());
     super.paint(g);
   }
 }
