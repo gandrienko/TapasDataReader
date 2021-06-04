@@ -125,6 +125,12 @@ public class ExTreeReconstructor {
         }
       for (int i=0; i<f.expl.length; i++)
         if (f.expl[i] != null && f.expl[i].eItems != null) {
+          if (actionMinMax!=null &&
+                  (f.expl[i].action<actionMinMax[0] || f.expl[i].action>actionMinMax[1]))
+            continue;
+          if (stepMinMax!=null &&
+                  (f.expl[i].step<stepMinMax[0] || f.expl[i].step>stepMinMax[1]))
+            continue;
           ExplanationItem combItems[] = f.expl[i].getExplItemsCombined(f.expl[i].eItems);
           if (combItems != null) {
             if (topNodesExCombined == null)
