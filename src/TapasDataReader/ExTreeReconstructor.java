@@ -1,9 +1,6 @@
 package TapasDataReader;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Hashtable;
-import java.util.Map;
+import java.util.*;
 
 public class ExTreeReconstructor {
   /**
@@ -21,7 +18,50 @@ public class ExTreeReconstructor {
     this.attrMinMaxValues=attrMinMaxValues;
   }
   
+  /**
+   * Based on the explanations of the given set of flights, reconstructs 4 variants of the decision tree
+   * (explanation tree):
+   *  1) using the full sequences of the original explanation conditions;
+   *     the results are stored in topNodes;
+   *  2) using the full sequences of the conditions with the breaks converted to integer values;
+   *     the results are stored in topNodesInt;
+   *  3) using compressed explanations, in which multiple conditions referring to the same attribute
+   *     are combined into a single condition; the results are stored in topNodesExCombined;
+   *  4) using compressed explanations after converting the breaks to integer values;
+   *     the results are stored in topNodesIntExCombined.
+   *  The top noded correspond to different decisions (actions), e.g., 0, 1, ..., 10.
+   *
+   * @param flights - the set of flight plan variants with explanations corresponding to different
+   *                  iteration steps of the solution development
+   * @return true if successful
+   */
   public boolean reconstructExTree (Hashtable<String, Flight> flights) {
+    return reconstructExTree(flights,null,null);
+  }
+  
+  /**
+   * Based on the explanations of the given set of flights, reconstructs 4 variants of the decision tree
+   * (explanation tree):
+   *  1) using the full sequences of the original explanation conditions;
+   *     the results are stored in topNodes;
+   *  2) using the full sequences of the conditions with the breaks converted to integer values;
+   *     the results are stored in topNodesInt;
+   *  3) using compressed explanations, in which multiple conditions referring to the same attribute
+   *     are combined into a single condition; the results are stored in topNodesExCombined;
+   *  4) using compressed explanations after converting the breaks to integer values;
+   *     the results are stored in topNodesIntExCombined.
+   *  The top noded correspond to different decisions (actions), e.g., 0, 1, ..., 10.
+   *
+   * @param flights - the set of flight plan variants with explanations corresponding to different
+   *                  iteration steps of the solution development
+   * @param actionMinMax - an array of length 2 specifying the range of actions to include in the results.
+   *                     If null, all actions are taken.
+   * @param stepMinMax - an array of length 2 specifying the range of the solution steps to include
+   *                   in the results. If null, all steps are taken.
+   * @return true if successful
+   */
+  public boolean reconstructExTree (Hashtable<String, Flight> flights,
+                                    int actionMinMax[], int stepMinMax[]) {
     if (flights==null || flights.isEmpty())
       return false;
     for (Map.Entry<String,Flight> e:flights.entrySet()) {
@@ -30,6 +70,12 @@ public class ExTreeReconstructor {
         continue;
       for (int i=0; i<f.expl.length; i++)
         if (f.expl[i] != null && f.expl[i].eItems != null) {
+          if (actionMinMax!=null &&
+                  (f.expl[i].action<actionMinMax[0] || f.expl[i].action>actionMinMax[1]))
+            continue;
+          if (stepMinMax!=null &&
+                  (f.expl[i].step<stepMinMax[0] || f.expl[i].step>stepMinMax[1]))
+            continue;
           if (topNodes==null)
             topNodes=new Hashtable<Integer,ExTreeNode>(20);
           ExTreeNode currNode=topNodes.get(f.expl[i].action);
@@ -55,13 +101,13 @@ public class ExTreeReconstructor {
             }
             child.addUse();
             currNode = child;
-  
+          
             if (attributes==null)
               attributes=new Hashtable<String,Integer>(100);
             Integer n=attributes.get(child.attrName);
             if (n==null) n=0;
             attributes.put(child.attrName,n+1);
-            
+          
             if (eIt.sector!=null && !eIt.sector.equalsIgnoreCase("null")) {
               child.addSectorUse(eIt.sector);
               if (sectors==null)
