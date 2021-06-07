@@ -131,7 +131,7 @@ public class ExTreeReconstructor {
           if (stepMinMax!=null &&
                   (f.expl[i].step<stepMinMax[0] || f.expl[i].step>stepMinMax[1]))
             continue;
-          ExplanationItem combItems[] = f.expl[i].getExplItemsCombined(f.expl[i].eItems);
+          ExplanationItem combItems[] = Explanation.getExplItemsCombined(f.expl[i].eItems);
           if (combItems != null) {
             if (topNodesExCombined == null)
               topNodesExCombined = new Hashtable<Integer, ExTreeNode>(20);
@@ -190,7 +190,7 @@ public class ExTreeReconstructor {
                 currNode = child;
               }
             }
-            ExplanationItem combIntItems[]=(intItems==null)?null:f.expl[i].getExplItemsCombined(intItems);
+            ExplanationItem combIntItems[]=(intItems==null)?null:Explanation.getExplItemsCombined(intItems);
             if (combIntItems!=null) {
               if (topNodesIntExCombined==null)
                 topNodesIntExCombined = new Hashtable<Integer, ExTreeNode>(20);

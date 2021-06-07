@@ -14,14 +14,14 @@ public class Explanation {
   public float Q=Float.NaN;
   public ExplanationItem eItems[]=null;
 
-  public ExplanationItem[] getExplItemsCombined (ExplanationItem ei[]) {
+  public static ExplanationItem[] getExplItemsCombined (ExplanationItem ei[]) {
     if (ei==null || ei.length==0)
       return null;
     Vector<ExplanationItem> vei=new Vector<ExplanationItem>(ei.length);
     vei.add(ei[0].clone());
     for (int i=1; i<ei.length; i++)
     if (ei[i]==null)
-      System.out.println("null eItem, flight "+FlightID+", step = "+step);
+      ; //System.out.println("null eItem, flight "+FlightID+", step = "+step);
     else {
       int n=-1;
       for (int j=0; n==-1 && j<vei.size(); j++)
@@ -41,7 +41,7 @@ public class Explanation {
     return eItemsCombined;
   }
 
-  public ExplanationItem[] getExplItemsAsIntegeres (ExplanationItem ei[], Hashtable<String,int[]> attrs) {
+  public static ExplanationItem[] getExplItemsAsIntegeres (ExplanationItem ei[], Hashtable<String,int[]> attrs) {
     if (ei==null || ei.length==0)
       return null;
     ExplanationItem eii[]=new ExplanationItem[ei.length];
