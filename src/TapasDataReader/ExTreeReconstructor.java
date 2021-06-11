@@ -392,4 +392,155 @@ public class ExTreeReconstructor {
       for (ExTreeNode child:node.children)
         countAttrPlusSectorUsesInNode(child,matrix);
   }
+  
+  public boolean reconstructExTree(ArrayList<Explanation> explanations) {
+    if (explanations==null || explanations.isEmpty())
+      return false;
+    for (int e=0; e<explanations.size(); e++) {
+      Explanation ex=explanations.get(e);
+      if (ex==null || ex.eItems==null)
+        continue;
+      if (topNodes==null)
+        topNodes=new Hashtable<Integer,ExTreeNode>(20);
+      ExTreeNode currNode=topNodes.get(ex.action);
+      if (currNode==null) {
+        currNode=new ExTreeNode();
+        topNodes.put(ex.action,currNode);
+        currNode.attrName="Action = "+ex.action;
+        currNode.level=-1;
+      }
+      currNode.addUse();
+      for (int j = 0; j < ex.eItems.length; j++) {
+        ExplanationItem eIt = ex.eItems[j];
+        if (eIt == null)
+          continue;
+        ExTreeNode child = currNode.findChild(eIt.attr, eIt.interval);
+        if (child == null) {
+          child = new ExTreeNode();
+          child.attrName = eIt.attr;
+          child.level = currNode.level+1;
+          child.condition = eIt.interval.clone();
+          child.isInteger=eIt.isInteger;
+          currNode.addChild(child);
+        }
+        child.addUse();
+        currNode = child;
+    
+        if (attributes==null)
+          attributes=new Hashtable<String,Integer>(100);
+        Integer n=attributes.get(child.attrName);
+        if (n==null) n=0;
+        attributes.put(child.attrName,n+1);
+    
+        if (eIt.sector!=null && !eIt.sector.equalsIgnoreCase("null")) {
+          child.addSectorUse(eIt.sector);
+          if (sectors==null)
+            sectors=new Hashtable<String,Integer>(100);
+          n=sectors.get(eIt.sector);
+          if (n==null) n=0;
+          sectors.put(eIt.sector,n+1);
+          if (attributesWithSectors==null)
+            attributesWithSectors=new Hashtable<String,Integer>(100);
+          n=attributesWithSectors.get(child.attrName);
+          if (n==null) n=0;
+          attributesWithSectors.put(child.attrName,n+1);
+        }
+      }
+    }
+    for (int e=0; e<explanations.size(); e++) {
+      Explanation ex=explanations.get(e);
+      if (ex==null || ex.eItems==null)
+        continue;
+        ExplanationItem combItems[] = Explanation.getExplItemsCombined(ex.eItems);
+        if (combItems != null) {
+          if (topNodesExCombined == null)
+            topNodesExCombined = new Hashtable<Integer, ExTreeNode>(20);
+          ExTreeNode currNode = topNodesExCombined.get(ex.action);
+          if (currNode == null) {
+            currNode = new ExTreeNode();
+            topNodesExCombined.put(ex.action, currNode);
+            currNode.attrName = "Action = " + ex.action;
+            currNode.level=-1;
+          }
+          currNode.addUse();
+          for (int j = 0; j < combItems.length; j++) {
+            ExplanationItem eIt = combItems[j];
+            if (eIt == null)
+              continue;
+            ExTreeNode child = currNode.findChild(eIt.attr, eIt.interval);
+            if (child == null) {
+              child = new ExTreeNode();
+              child.attrName = eIt.attr;
+              child.level = currNode.level+1;
+              child.condition = eIt.interval.clone();
+              child.isInteger=eIt.isInteger;
+              currNode.addChild(child);
+            }
+            child.addUse();
+            currNode = child;
+          }
+        }
+        if (attrMinMaxValues!=null) {
+          ExplanationItem intItems[] = ex.getExplItemsAsIntegeres(ex.eItems, attrMinMaxValues);
+          if (intItems!=null) {
+            if (topNodesInt==null)
+              topNodesInt = new Hashtable<Integer, ExTreeNode>(20);
+            ExTreeNode currNode = topNodesInt.get(ex.action);
+            if (currNode == null) {
+              currNode = new ExTreeNode();
+              topNodesInt.put(ex.action, currNode);
+              currNode.attrName = "Action = " + ex.action;
+              currNode.level=-1;
+            }
+            currNode.addUse();
+            for (int j = 0; j < intItems.length; j++) {
+              ExplanationItem eIt = intItems[j];
+              if (eIt == null)
+                continue;
+              ExTreeNode child = currNode.findChild(eIt.attr, eIt.interval);
+              if (child == null) {
+                child = new ExTreeNode();
+                child.attrName = eIt.attr;
+                child.level = currNode.level+1;
+                child.condition = eIt.interval.clone();
+                child.isInteger=eIt.isInteger;
+                currNode.addChild(child);
+              }
+              child.addUse();
+              currNode = child;
+            }
+          }
+          ExplanationItem combIntItems[]=(intItems==null)?null:Explanation.getExplItemsCombined(intItems);
+          if (combIntItems!=null) {
+            if (topNodesIntExCombined==null)
+              topNodesIntExCombined = new Hashtable<Integer, ExTreeNode>(20);
+            ExTreeNode currNode = topNodesIntExCombined.get(ex.action);
+            if (currNode == null) {
+              currNode = new ExTreeNode();
+              topNodesIntExCombined.put(ex.action, currNode);
+              currNode.attrName = "Action = " + ex.action;
+              currNode.level=-1;
+            }
+            currNode.addUse();
+            for (int j = 0; j < combIntItems.length; j++) {
+              ExplanationItem eIt = combIntItems[j];
+              if (eIt == null)
+                continue;
+              ExTreeNode child = currNode.findChild(eIt.attr, eIt.interval);
+              if (child == null) {
+                child = new ExTreeNode();
+                child.attrName = eIt.attr;
+                child.level = currNode.level+1;
+                child.condition = eIt.interval.clone();
+                child.isInteger=eIt.isInteger;
+                currNode.addChild(child);
+              }
+              child.addUse();
+              currNode = child;
+            }
+          }
+        }
+      }
+    return topNodes!=null && !topNodes.isEmpty();
+  }
 }
