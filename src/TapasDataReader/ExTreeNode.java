@@ -32,6 +32,11 @@ public class ExTreeNode {
   
   public ExTreeNode parent=null;
   public ArrayList<ExTreeNode> children=null;
+  /**
+   * How many terminal nodes (leaves) exist in the subtree originating from this node.
+   * If this is a leaf, the value is 0.
+   */
+  public int nLeavesBelow=0;
   
   public String getLabel() {
     if (attrName==null)
@@ -119,5 +124,14 @@ public class ExTreeNode {
     else
       children.add(child);
     child.parent=this;
+  }
+  
+  public void countLeavesBelow() {
+    nLeavesBelow=0;
+    if (children!=null)
+      for (ExTreeNode child:children) {
+        child.countLeavesBelow();
+        nLeavesBelow+=Math.max(1,child.nLeavesBelow);
+      }
   }
 }

@@ -222,7 +222,23 @@ public class ExTreeReconstructor {
           }
         }
     }
+    countLeaves();
     return topNodes!=null && !topNodes.isEmpty();
+  }
+  
+  public void countLeaves() {
+    if (topNodes!=null)
+      for (Map.Entry<Integer,ExTreeNode> entry:topNodes.entrySet())
+        entry.getValue().countLeavesBelow();
+    if (topNodesInt!=null)
+      for (Map.Entry<Integer,ExTreeNode> entry:topNodesInt.entrySet())
+        entry.getValue().countLeavesBelow();
+    if (topNodesExCombined!=null)
+      for (Map.Entry<Integer,ExTreeNode> entry:topNodesExCombined.entrySet())
+        entry.getValue().countLeavesBelow();
+    if (topNodesIntExCombined!=null)
+      for (Map.Entry<Integer,ExTreeNode> entry:topNodesIntExCombined.entrySet())
+        entry.getValue().countLeavesBelow();
   }
   
   /**
@@ -541,6 +557,7 @@ public class ExTreeReconstructor {
           }
         }
       }
+    countLeaves();
     return topNodes!=null && !topNodes.isEmpty();
   }
 }
