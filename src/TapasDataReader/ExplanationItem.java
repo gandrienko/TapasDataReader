@@ -22,4 +22,17 @@ public class ExplanationItem {
     ei.sector=this.sector;
     return ei;
   }
+  
+  
+  public boolean sameCondition(ExplanationItem ei) {
+    if (ei.attr==null)
+      return this.attr==null;
+    if (!ei.attr.equals(this.attr))
+      return false;
+    if (ei.interval==null)
+      return this.interval==null;
+    if (this.interval==null)
+      return false;
+    return ei.interval[0]==this.interval[0] && ei.interval[1]==this.interval[1];
+  }
 }
