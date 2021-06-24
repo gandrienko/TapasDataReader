@@ -7,9 +7,13 @@ import javax.swing.event.ChangeListener;
 
 public class MySammonsProjection extends SammonsProjection {
   /**
-   * Last stored projection copy.
+   * Projection copy with the minimal stress
    */
-  public double lastPojectionCopy[][]=null;
+  public double bestProjection[][]=null;
+  /**
+   * The stress of the best projection
+   */
+  public double minStress=Double.NaN;
   public boolean done=false;
   
   public MySammonsProjection(double[][] distanceMatrix,int outputDimension,int maxIterations,
@@ -18,33 +22,49 @@ public class MySammonsProjection extends SammonsProjection {
   }
   
   public void runProjection(int nStepsBetweenNotifications,
-                            ChangeListener listener, double minStressImprovement) {
+                            int maxStepsWithNoImprovement,
+                            ChangeListener listener) {
     if (this._distanceMatrix==null || listener==null)
       return;
-    int nSteps=0, nStepsTotal=0;
+    int nImprovementSteps=0, nStepsTotal=0;
     int i0=this.Iteration;
-    double lastStress=Double.NaN;
     System.out.println("Projection starts");
     for (int i = this._maxIteration; i >= i0; i--) {
       this.Iterate();
-      ++nSteps; ++nStepsTotal;
+      ++nImprovementSteps; ++nStepsTotal;
       double stress=computeStress();
-      System.out.println("Projection: "+nStepsTotal+" steps done; stress = "+stress);
-      if (lastStress-stress<minStressImprovement)
-        break;
-      if (nSteps>=nStepsBetweenNotifications) {
-        double copy[][]=new double[Projection.length][Projection[0].length];
-        for (int j=0; j<Projection.length; j++)
-          for (int k=0; k<Projection[j].length; k++)
-            copy[j][k]=Projection[j][k];
-        lastPojectionCopy=copy;
-        nSteps=0;
-        listener.stateChanged(new ChangeEvent(this));
-        System.out.println("Projection: notified the listener");
+      System.out.println("Projection "+OutputDimension+"D: "+
+                             nStepsTotal+" steps done; stress = "+stress+", min stress = "+minStress);
+      if (bestProjection==null || stress<minStress) {
+        bestProjection=makeProjectionCopy(Projection);
+        minStress=stress;
+        if (nImprovementSteps>=nStepsBetweenNotifications) {
+          nImprovementSteps=0;
+          listener.stateChanged(new ChangeEvent(this));
+          System.out.println("Projection: notified the listener");
+        }
       }
+      else
+        if (nImprovementSteps>=maxStepsWithNoImprovement) {
+          System.out.println("Projection "+OutputDimension+"D: no improvement in "+
+                                 nImprovementSteps+" steps; stopping the process");
+          break;
+        }
     }
-    listener.stateChanged(new ChangeEvent(this));
     done=true;
-    System.out.println("Projection done!");
+    if (bestProjection!=null)
+      Projection=bestProjection;
+    listener.stateChanged(new ChangeEvent(this));
+    System.out.println("Projection "+OutputDimension+"D done; min stress = "+minStress);
+  }
+  
+  public static double[][] makeProjectionCopy(double projection[][]) {
+    if (projection==null)
+      return null;
+    double copy[][]=new double[projection.length][projection[0].length];
+    for (int j=0; j<projection.length; j++)
+      for (int k=0; k<projection[j].length; k++)
+        copy[j][k]=projection[j][k];
+    return copy;
   }
 }
