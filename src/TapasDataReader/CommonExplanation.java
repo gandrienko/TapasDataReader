@@ -38,6 +38,43 @@ public class CommonExplanation {
    */
   public Color color=null;
   
+  public String toString(){
+    String str="Action = "+action+"; used "+nUses+" times for "+uses.size()+" flights";
+    for (int i=0; i<eItems.length; i++) {
+      str +="; "+eItems[i].attr;
+      if (Double.isInfinite(eItems[i].interval[0]))
+        str+="<"+eItems[i].interval[1];
+      else
+        if (Double.isInfinite(eItems[i].interval[1]))
+          str+=">"+eItems[i].interval[0];
+        else
+          str+=" in ["+eItems[i].interval[0]+".."+eItems[i].interval[1]+")";
+          
+    }
+    return str;
+  }
+  
+  public String toHTML() {
+    String txt="<html><body style=background-color:rgb(255,255,204)>";
+    txt += "<table border=0 cellmargin=3 cellpadding=3 cellspacing=3>";
+    txt+="<tr><td>Action </td><td>"+action+"</td></tr>";
+    txt+="<tr><td>N of uses:</td><td>"+nUses+"</td></tr>";
+    txt+="<tr><td>N of flights:</td><td>"+uses.size()+"</td></tr>";
+    txt+="<tr><td>Feature</td><td>from</td><td>to</td></tr>";
+    for (int i=0; i<eItems.length; i++) {
+      txt+="<tr><td>"+eItems[i].attr+"</td><td>";
+      if (!Double.isInfinite(eItems[i].interval[0]))
+        txt+=(eItems[i].isInteger)?String.valueOf((int)eItems[i].interval[0]):String.valueOf(eItems[i].interval[0]);
+      txt+="</td><td>";
+      if (!Double.isInfinite(eItems[i].interval[1]))
+        txt+=(eItems[i].isInteger)?String.valueOf((int)eItems[i].interval[1]):String.valueOf(eItems[i].interval[1]);
+      txt+="</td></tr>";
+    }
+    txt += "</table>";
+    txt+="</body></html>";
+    return txt;
+  }
+  
   /**
    * Creates a new instance of CommonExplanation from the given individual explanations.
    * Puts the individual explanation in the hash table "uses".
