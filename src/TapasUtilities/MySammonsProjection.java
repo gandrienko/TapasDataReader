@@ -21,13 +21,15 @@ public class MySammonsProjection extends SammonsProjection {
                             ChangeListener listener, double minStressImprovement) {
     if (this._distanceMatrix==null || listener==null)
       return;
-    int nSteps=0;
+    int nSteps=0, nStepsTotal=0;
     int i0=this.Iteration;
     double lastStress=Double.NaN;
+    System.out.println("Projection starts");
     for (int i = this._maxIteration; i >= i0; i--) {
       this.Iterate();
-      ++nSteps;
+      ++nSteps; ++nStepsTotal;
       double stress=computeStress();
+      System.out.println("Projection: "+nStepsTotal+" steps done; stress = "+stress);
       if (lastStress-stress<minStressImprovement)
         break;
       if (nSteps>=nStepsBetweenNotifications) {
@@ -38,8 +40,11 @@ public class MySammonsProjection extends SammonsProjection {
         lastPojectionCopy=copy;
         nSteps=0;
         listener.stateChanged(new ChangeEvent(this));
+        System.out.println("Projection: notified the listener");
       }
     }
+    listener.stateChanged(new ChangeEvent(this));
     done=true;
+    System.out.println("Projection done!");
   }
 }

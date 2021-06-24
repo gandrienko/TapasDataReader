@@ -174,4 +174,40 @@ public class CommonExplanation {
     }
     return exList;
   }
+  
+  public static double[][] computeDistances(ArrayList<CommonExplanation> explanations,
+                                            Hashtable<String,int[]> attrMinMaxValues) {
+    if (explanations==null || explanations.size()<2)
+      return null;
+    double d[][]=new double[explanations.size()][explanations.size()];
+    for (int i=0; i<d.length; i++) {
+      d[i][i]=0;
+      for (int j=i+1; j<d.length; j++)
+        d[i][j]=d[j][i]=distance(explanations.get(i).eItems,explanations.get(j).eItems,attrMinMaxValues);
+    }
+    return d;
+  }
+  
+  public static double distance(ExplanationItem e1[], ExplanationItem e2[],
+                                Hashtable<String,int[]> attrMinMaxValues) {
+    if (e1==null || e1.length<1)
+      if (e2==null) return 0; else return e2.length;
+    if (e2==null || e2.length<1)
+      return e1.length;
+    double d=e1.length+e2.length;
+    for (int i=0; i<e1.length; i++) {
+      int i2=-1;
+      for (int j=0; j<e2.length && i2<0; j++)
+        if (e1[i].attr.equals(e2[j].attr))
+          i2=j;
+      if (i2<0)
+        continue;
+      d-=2; //corresponding items found
+      int minmax[]=attrMinMaxValues.get(e1[i].attr);
+      double min=(minmax==null)?Double.NaN:minmax[0], max=(minmax==null)?Double.NaN:minmax[1];
+      d+=IntervalDistance.distanceRelative(e1[i].interval[0],e1[i].interval[1],
+          e2[i2].interval[0],e2[i2].interval[1],min,max);
+    }
+    return d;
+  }
 }
