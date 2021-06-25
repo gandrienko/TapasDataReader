@@ -119,7 +119,8 @@ public class CommonExplanation {
       for (int i=0; i<ei.length; i++) {
         ei[i].isInteger=true;
         double a=ei[i].interval[0], b=ei[i].interval[1];
-        if (Math.floor(a)==Math.ceil(a) && Math.floor(b)==Math.ceil(b))
+        if (!Double.isInfinite(a) && !Double.isInfinite(b) &&
+                Math.floor(a)==Math.ceil(a) && Math.floor(b)==Math.ceil(b))
           continue; //both are already integers
         int minmax[]=(attrMinMax==null)?null:attrMinMax.get(ei[i].attr);
         if (minmax!=null) {
