@@ -33,7 +33,7 @@ public class ItemSelectionManager {
     if (obj==null)
       return;
     if (selected==null)
-      selected=new ArrayList(20);
+      selected=new ArrayList(50);
     if (!selected.contains(obj)) {
       selected.add(obj);
       notifyChange();
@@ -51,6 +51,21 @@ public class ItemSelectionManager {
     selected.clear();
     selected.add(obj);
     notifyChange();
+  }
+  
+  public void select(ArrayList toSelect) {
+    if (toSelect==null || toSelect.isEmpty())
+      return;
+    if (selected==null)
+      selected=new ArrayList(50);
+    boolean changed=false;
+    for (Object s:toSelect)
+      if (!selected.contains(s)) {
+        selected.add(s);
+        changed=true;
+      }
+    if (changed)
+      notifyChange();
   }
   
   public void deselect(Object obj) {
@@ -90,7 +105,7 @@ public class ItemSelectionManager {
       selected.clear();
     if (newSelection!=null) {
       if (selected==null)
-        selected=new ArrayList(20);
+        selected=new ArrayList(50);
       for (int i = 0; i < newSelection.size(); i++)
         selected.add(newSelection.get(i));
     }
