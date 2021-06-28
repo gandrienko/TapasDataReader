@@ -14,11 +14,15 @@ public class MySammonsProjection extends SammonsProjection {
    * The stress of the best projection
    */
   public double minStress=Double.NaN;
-  public boolean done=false;
+  public boolean done=false, mustStop=false;
   
   public MySammonsProjection(double[][] distanceMatrix,int outputDimension,int maxIterations,
                              boolean useEuclid) {
     super(distanceMatrix,null,outputDimension,maxIterations,useEuclid);
+  }
+  
+  public void forceToStop() {
+    mustStop=true;
   }
   
   public void runProjection(int nStepsBetweenNotifications,
@@ -30,7 +34,11 @@ public class MySammonsProjection extends SammonsProjection {
     int i0=this.Iteration;
     System.out.println("Projection starts");
     for (int i = this._maxIteration; i >= i0; i--) {
+      if (mustStop)
+        break;
       this.Iterate();
+      if (mustStop)
+        break;
       ++nImprovementSteps; ++nStepsTotal;
       double stress=computeStress();
       System.out.println("Projection "+OutputDimension+"D: "+
@@ -40,6 +48,8 @@ public class MySammonsProjection extends SammonsProjection {
         minStress=stress;
         if (nImprovementSteps>=nStepsBetweenNotifications) {
           nImprovementSteps=0;
+          if (mustStop)
+            break;
           listener.stateChanged(new ChangeEvent(this));
           System.out.println("Projection: notified the listener");
         }
@@ -51,10 +61,13 @@ public class MySammonsProjection extends SammonsProjection {
           break;
         }
     }
+    if (mustStop)
+      return;
     done=true;
     if (bestProjection!=null)
       Projection=bestProjection;
-    listener.stateChanged(new ChangeEvent(this));
+    if (!mustStop)
+      listener.stateChanged(new ChangeEvent(this));
     System.out.println("Projection "+OutputDimension+"D done; min stress = "+minStress);
   }
   
