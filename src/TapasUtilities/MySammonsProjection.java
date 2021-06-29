@@ -32,7 +32,7 @@ public class MySammonsProjection extends SammonsProjection {
       return;
     int nImprovementSteps=0, nStepsTotal=0;
     int i0=this.Iteration;
-    System.out.println("Projection starts");
+    System.out.println("Projection "+OutputDimension+"D starts");
     for (int i = this._maxIteration; i >= i0; i--) {
       if (mustStop)
         break;
@@ -41,8 +41,9 @@ public class MySammonsProjection extends SammonsProjection {
         break;
       ++nImprovementSteps; ++nStepsTotal;
       double stress=computeStress();
-      System.out.println("Projection "+OutputDimension+"D: "+
-                             nStepsTotal+" steps done; stress = "+stress+", min stress = "+minStress);
+      if (nStepsTotal % 50 == 0)
+        System.out.println("Projection "+OutputDimension+"D: "+
+                               nStepsTotal+" steps done; stress = "+stress+", min stress = "+minStress);
       if (bestProjection==null || stress<minStress) {
         bestProjection=makeProjectionCopy(Projection);
         minStress=stress;
@@ -51,7 +52,7 @@ public class MySammonsProjection extends SammonsProjection {
           if (mustStop)
             break;
           listener.stateChanged(new ChangeEvent(this));
-          System.out.println("Projection: notified the listener");
+          //System.out.println("Projection: notified the listener");
         }
       }
       else
