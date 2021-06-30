@@ -22,6 +22,8 @@ public class TableRowsSelectionManager
   protected ItemSelectionManager selector=null;
   protected int hlIdx=-1;
   
+  public boolean mayScrollTable =true;
+  
   public void setTable(JTable table) {
     this.table=table;
     if (table!=null)
@@ -38,6 +40,10 @@ public class TableRowsSelectionManager
     this.selector = selector;
     if (selector!=null)
       selector.addChangeListener(this);
+  }
+  
+  public void setMayScrollTable(boolean mayScrollTable) {
+    this.mayScrollTable = mayScrollTable;
   }
   
   public void stateChanged(ChangeEvent e) {
@@ -74,8 +80,10 @@ public class TableRowsSelectionManager
           if (min>sel[i]) min=sel[i];
         }
         table.getSelectionModel().addListSelectionListener(this);
-        Rectangle rect=table.getCellRect(min,0,true);
-        table.scrollRectToVisible(rect);
+        if (mayScrollTable) {
+          Rectangle rect = table.getCellRect(min, 0, true);
+          table.scrollRectToVisible(rect);
+        }
       }
     }
     else
@@ -93,7 +101,8 @@ public class TableRowsSelectionManager
         Rectangle rect=table.getCellRect(row,0,true);
         rect.width=table.getWidth();
         table.repaint(rect);
-        table.scrollRectToVisible(rect);
+        if (mayScrollTable)
+          table.scrollRectToVisible(rect);
       }
   }
   public void valueChanged(ListSelectionEvent e) {
