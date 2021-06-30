@@ -112,4 +112,19 @@ public class ItemSelectionManager {
     notifyChange();
   }
   
+  /**
+   * Assumes that both lists contain unique elements, no duplicates
+   */
+  public static boolean sameContent(ArrayList a1, ArrayList a2) {
+    if (a1==null || a1.isEmpty())
+      return a2==null || a2.isEmpty();
+    if (a2==null || a2.isEmpty())
+      return false;
+    if (a1.size()!=a2.size())
+      return false;
+    for (int i=0; i<a1.size(); i++)
+      if (!a2.contains(a1))
+        return false;
+    return true;
+  }
 }
