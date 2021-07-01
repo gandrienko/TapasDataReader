@@ -75,6 +75,22 @@ public class ItemSelectionManager {
     notifyChange();
   }
   
+  public void deselect(ArrayList objList) {
+    if (objList==null || objList.isEmpty() ||
+            selected==null || selected.isEmpty())
+      return;
+    boolean changed=false;
+    for (int i=0; i<objList.size(); i++) {
+      int idx=selected.indexOf(objList.get(i));
+      if (idx>=0) {
+        selected.remove(idx);
+        changed=true;
+      }
+    }
+    if (changed)
+      notifyChange();
+  }
+  
   public void deselectAll() {
     if (selected==null || selected.isEmpty())
       return;
@@ -88,6 +104,16 @@ public class ItemSelectionManager {
   
   public boolean isSelected(Object obj) {
     return obj!=null && selected!=null && selected.contains(obj);
+  }
+  
+  public boolean areAllSelected(ArrayList objList) {
+    if (objList==null || objList.isEmpty() ||
+            selected==null || selected.isEmpty() || selected.size()<objList.size())
+      return false;
+    for (int i=0; i<objList.size(); i++)
+      if (!selected.contains(objList.get(i)))
+        return false;
+    return true;
   }
   
   public int indexOf(Object obj) {
