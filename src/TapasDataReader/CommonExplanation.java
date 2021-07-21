@@ -76,6 +76,35 @@ public class CommonExplanation {
   }
   
   /**
+   * If both explanations refer to the same action, returns true if this explanation is
+   * more general than ex (subsumes ex).
+   */
+  public boolean subsumes(CommonExplanation ex) {
+    if (ex==null)
+      return false;
+    if (ex.action!=this.action)
+      return false;
+    ExplanationItem e1[]=eItems, e2[]=ex.eItems;
+    if (e1==null || e1.length<1 || e2==null || e2.length<1)
+      return false;
+    boolean subsumes=true;
+    for (int i=0; i<e1.length && subsumes; i++) {
+      int i2 = -1;
+      for (int j = 0; j < e2.length && i2 < 0; j++)
+        if (e1[i].attr.equals(e2[j].attr))
+          i2 = j;
+      subsumes = i2>=0 && includes(e1[i].interval,e2[i2].interval);
+    }
+    return subsumes;
+  }
+  
+  public static boolean includes(double interval1[], double interval2[]) {
+    if (interval1==null || interval2==null)
+      return false;
+    return interval1[0]<=interval2[0] && interval1[1]>=interval2[1];
+  }
+  
+  /**
    * Creates a new instance of CommonExplanation from the given individual explanations.
    * Puts the individual explanation in the hash table "uses".
    */
