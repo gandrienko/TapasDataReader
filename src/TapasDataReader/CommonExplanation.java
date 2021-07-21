@@ -80,9 +80,16 @@ public class CommonExplanation {
    * more general than ex (subsumes ex).
    */
   public boolean subsumes(CommonExplanation ex) {
+    return subsumes(ex,true);
+  }
+  /**
+   * If both explanations refer to the same action, returns true if this explanation is
+   * more general than ex (subsumes ex).
+   */
+  public boolean subsumes(CommonExplanation ex, boolean mustHaveSameAction) {
     if (ex==null)
       return false;
-    if (ex.action!=this.action)
+    if (mustHaveSameAction && ex.action!=this.action)
       return false;
     ExplanationItem e1[]=eItems, e2[]=ex.eItems;
     if (e1==null || e1.length<1 || e2==null || e2.length<1)
