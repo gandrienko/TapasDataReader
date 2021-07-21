@@ -173,6 +173,39 @@ public class CommonExplanation {
     return ei;
   }
   
+  public static boolean sameFeatures(ExplanationItem e1[], ExplanationItem e2[]) {
+    if (e1==null || e1.length<1)
+      return e2==null || e2.length<1;
+    boolean ok[]=new boolean[e2.length];
+    for (int i=0; i<ok.length; i++)
+      ok[i]=false;
+    for (int i=0; i<e1.length; i++) {
+      boolean found=false;
+      for (int j=0; j<e2.length && !found; j++) {
+        found = e1[i].attr.equals(e2[j].attr);
+        if (found)
+          ok[j]=true;
+      }
+      if (!found)
+        return false;
+    }
+    for (int i=0; i<e2.length; i++)
+      if (!ok[i]) {
+        boolean found=false;
+        for (int j=0; j<e1.length && !found; j++)
+          found = e2[i].attr.equals(e1[j].attr);
+        if (!found)
+          return false;
+      }
+    return true;
+  }
+  
+  public static boolean sameFeatures(CommonExplanation ex1, CommonExplanation ex2) {
+    if (ex1==null || ex2==null)
+      return false;
+    return sameFeatures(ex1.eItems,ex2.eItems);
+  }
+  
   public static boolean sameExplanations(ExplanationItem e1[], ExplanationItem e2[]) {
     if (e1==null || e1.length<1)
       return e2==null || e2.length<1;
@@ -198,6 +231,12 @@ public class CommonExplanation {
           return false;
       }
     return true;
+  }
+  
+  public static boolean sameExplanations(CommonExplanation ex1, CommonExplanation ex2) {
+    if (ex1==null || ex2==null)
+      return false;
+    return sameExplanations(ex1.eItems,ex2.eItems);
   }
   
   public static ArrayList<CommonExplanation> addExplanation(ArrayList<CommonExplanation> exList,
