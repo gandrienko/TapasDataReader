@@ -117,7 +117,7 @@ public class CommonExplanation {
    */
   public static CommonExplanation createCommonExplanation(Explanation ex,
                                                           boolean transformConditionsToInteger,
-                                                          Hashtable<String,int[]> attrMinMax,
+                                                          Hashtable<String,float[]> attrMinMax,
                                                           boolean combineConditions) {
     if (ex==null || ex.eItems==null || ex.eItems.length<1)
       return null;
@@ -146,7 +146,7 @@ public class CommonExplanation {
   
   public static ExplanationItem[] makeCopyAndTransform(ExplanationItem eiOrig[],
                                                        boolean transformConditionsToInteger,
-                                                       Hashtable<String,int[]> attrMinMax,
+                                                       Hashtable<String,float[]> attrMinMax,
                                                        boolean combineConditions){
     ExplanationItem ei[]=makeCopy(eiOrig);
     if (ei==null)
@@ -158,7 +158,7 @@ public class CommonExplanation {
         if (!Double.isInfinite(a) && !Double.isInfinite(b) &&
                 Math.floor(a)==Math.ceil(a) && Math.floor(b)==Math.ceil(b))
           continue; //both are already integers
-        int minmax[]=(attrMinMax==null)?null:attrMinMax.get(ei[i].attr);
+        float minmax[]=(attrMinMax==null)?null:attrMinMax.get(ei[i].attr);
         if (minmax!=null) {
           ei[i].interval[0]=Math.max(minmax[0],Math.ceil(a));
           ei[i].interval[1]=Math.min(minmax[1],Math.floor(b));
@@ -242,7 +242,7 @@ public class CommonExplanation {
   public static ArrayList<CommonExplanation> addExplanation(ArrayList<CommonExplanation> exList,
                                                             Explanation exToAdd,
                                                             boolean transformConditionsToInteger,
-                                                            Hashtable<String,int[]> attrMinMax,
+                                                            Hashtable<String,float[]> attrMinMax,
                                                             boolean combineConditions) {
     if (exToAdd==null || exToAdd.eItems==null || exToAdd.eItems.length<1)
       return null;
@@ -274,7 +274,7 @@ public class CommonExplanation {
   
   public static ArrayList<CommonExplanation> getCommonExplanations(ArrayList<Explanation> explanations,
                                                                    boolean transformConditionsToInteger,
-                                                                   Hashtable<String,int[]> attrMinMax,
+                                                                   Hashtable<String,float[]> attrMinMax,
                                                                    boolean combineConditions) {
     if (explanations==null || explanations.isEmpty())
       return null;
@@ -289,7 +289,7 @@ public class CommonExplanation {
   }
   
   public static double[][] computeDistances(ArrayList<CommonExplanation> explanations,
-                                            Hashtable<String,int[]> attrMinMaxValues) {
+                                            Hashtable<String,float[]> attrMinMaxValues) {
     if (explanations==null || explanations.size()<2)
       return null;
     double d[][]=new double[explanations.size()][explanations.size()];
@@ -302,7 +302,7 @@ public class CommonExplanation {
   }
   
   public static double distance(ExplanationItem e1[], ExplanationItem e2[],
-                                Hashtable<String,int[]> attrMinMaxValues) {
+                                Hashtable<String,float[]> attrMinMaxValues) {
     if (e1==null || e1.length<1)
       if (e2==null) return 0; else return e2.length;
     if (e2==null || e2.length<1)
@@ -316,7 +316,7 @@ public class CommonExplanation {
       if (i2<0)
         continue;
       d-=2; //corresponding items found
-      int minmax[]=attrMinMaxValues.get(e1[i].attr);
+      float minmax[]=attrMinMaxValues.get(e1[i].attr);
       double min=(minmax==null)?Double.NaN:minmax[0], max=(minmax==null)?Double.NaN:minmax[1];
       d+=IntervalDistance.distanceRelative(e1[i].interval[0],e1[i].interval[1],
           e2[i2].interval[0],e2[i2].interval[1],min,max);

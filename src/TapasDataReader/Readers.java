@@ -236,7 +236,7 @@ public class Readers {
     return records;
   }
 
-  public static void readExplanations(String path, TreeSet<Integer> steps, Hashtable<String,Flight> flights, Hashtable<String,int[]> attrs) {
+  public static void readExplanations(String path, TreeSet<Integer> steps, Hashtable<String,Flight> flights, Hashtable<String,float[]> attrs) {
     File folder = new File(path+"VA");
     File[] listOfFiles = folder.listFiles();
     int N=0, Nprev=0;
@@ -276,9 +276,9 @@ public class Readers {
                     item.attr=eitokens[0];
                     item.sector=eitokens[1];
                     item.value=Double.valueOf(eitokens[2]).floatValue();
-                    int minmax[]=attrs.get(item.attr);
+                    float minmax[]=attrs.get(item.attr);
                     if (minmax==null) {
-                      minmax=new int[2];
+                      minmax=new float[2];
                       minmax[0]=Integer.MAX_VALUE;
                       minmax[1]=0;
                     }
