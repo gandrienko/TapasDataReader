@@ -287,9 +287,9 @@ public class CommonExplanation {
     if (!Float.isNaN(exToAdd.Q)) {
       cEx.sumQ+=exToAdd.Q;
       cEx.meanQ=cEx.sumQ/cEx.nUses;
-      if (cEx.minQ>exToAdd.Q)
+      if (cEx.nUses==1 || cEx.minQ>exToAdd.Q)
         cEx.minQ=exToAdd.Q;
-      if (cEx.maxQ<exToAdd.Q)
+      if (cEx.nUses==1 || cEx.maxQ<exToAdd.Q)
         cEx.maxQ=exToAdd.Q;
     }
     return exList;
