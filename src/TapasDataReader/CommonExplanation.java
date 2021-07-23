@@ -61,7 +61,7 @@ public class CommonExplanation {
   public String toHTML (Hashtable<String,float[]> attrMinMax) { return toHTML(attrMinMax,""); }
 
   public String toHTML (Hashtable<String,float[]> attrMinMax, String columnAtPointer) {
-    System.out.println(columnAtPointer);
+    //System.out.println(columnAtPointer);
     String txt="<html><body style=background-color:rgb(255,255,204)>";
     txt += "<table border=0 cellmargin=3 cellpadding=3 cellspacing=3>";
     txt+="<tr><td>Action </td><td>"+action+"</td><td>Mean Q</td><td>"+String.format("%.4f",meanQ)+"</td></tr>";
@@ -79,8 +79,8 @@ public class CommonExplanation {
     txt+="<tr><td>Feature</td><td>min</td><td>from</td><td>to</td><td>max</td></tr>";
     for (int i=0; i<eItems.length; i++) {
       boolean b=eItems[i].attr.equals(columnAtPointer);
-      txt+="<tr align=right><td>"+eItems[i].attr+"</td>";
-      txt+="<td>"+((b)?"<b>":"")+String.format("%.4f",attrMinMax.get(eItems[i].attr)[0])+((b)?"</b>":"")+"</td><td>";
+      txt+="<tr align=right><td>"+((b)?"<b>":"")+eItems[i].attr+((b)?"</b>":"")+"</td>";
+      txt+="<td>"+String.format("%.4f",attrMinMax.get(eItems[i].attr)[0])+"</td><td>";
       if (!Double.isInfinite(eItems[i].interval[0]))
         txt+=(eItems[i].isInteger)?String.valueOf((int)eItems[i].interval[0]):String.format("%.4f",eItems[i].interval[0]);
       txt+="</td><td>";
