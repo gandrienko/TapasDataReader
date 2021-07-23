@@ -67,8 +67,8 @@ public class CommonExplanation {
     txt+="<tr><td>N of data items:</td><td>"+uses.size()+"</td></tr>";
     txt+="<tr><td>Feature</td><td>min</td><td>from</td><td>to</td><td>max</td></tr>";
     for (int i=0; i<eItems.length; i++) {
-      txt+="<tr><td>"+eItems[i].attr+"</td><td>";
-      txt+="<td>"+attrMinMax.get(eItems[i].attr)[0]+"</td>";
+      txt+="<tr><td>"+eItems[i].attr+"</td>";
+      txt+="<td>"+attrMinMax.get(eItems[i].attr)[0]+"</td><td>";
       if (!Double.isInfinite(eItems[i].interval[0]))
         txt+=(eItems[i].isInteger)?String.valueOf((int)eItems[i].interval[0]):String.valueOf(eItems[i].interval[0]);
       txt+="</td><td>";
