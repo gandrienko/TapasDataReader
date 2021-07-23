@@ -75,7 +75,7 @@ public class CommonExplanation {
       if (!Double.isInfinite(eItems[i].interval[1]))
         txt+=(eItems[i].isInteger)?String.valueOf((int)eItems[i].interval[1]):String.valueOf(eItems[i].interval[1]);
       txt+="</td>";
-      txt+="<td>"+attrMinMax.get(eItems[i].attr)[0]+"</td></tr>";
+      txt+="<td>"+attrMinMax.get(eItems[i].attr)[1]+"</td></tr>";
     }
     txt += "</table>";
     txt+="</body></html>";
