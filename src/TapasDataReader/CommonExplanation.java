@@ -58,21 +58,24 @@ public class CommonExplanation {
     return str;
   }
   
-  public String toHTML() {
+  public String toHTML (Hashtable<String,float[]> attrMinMax) {
     String txt="<html><body style=background-color:rgb(255,255,204)>";
     txt += "<table border=0 cellmargin=3 cellpadding=3 cellspacing=3>";
     txt+="<tr><td>Action </td><td>"+action+"</td></tr>";
+    txt+="<tr><td>Q </td><td>"+Q+"</td></tr>";
     txt+="<tr><td>N of uses:</td><td>"+nUses+"</td></tr>";
-    txt+="<tr><td>N of flights:</td><td>"+uses.size()+"</td></tr>";
-    txt+="<tr><td>Feature</td><td>from</td><td>to</td></tr>";
+    txt+="<tr><td>N of data items:</td><td>"+uses.size()+"</td></tr>";
+    txt+="<tr><td>Feature</td><td>min</td><td>from</td><td>to</td><td>max</td></tr>";
     for (int i=0; i<eItems.length; i++) {
       txt+="<tr><td>"+eItems[i].attr+"</td><td>";
+      txt+="<td>"+attrMinMax.get(eItems[i].attr)[0]+"</td>";
       if (!Double.isInfinite(eItems[i].interval[0]))
         txt+=(eItems[i].isInteger)?String.valueOf((int)eItems[i].interval[0]):String.valueOf(eItems[i].interval[0]);
       txt+="</td><td>";
       if (!Double.isInfinite(eItems[i].interval[1]))
         txt+=(eItems[i].isInteger)?String.valueOf((int)eItems[i].interval[1]):String.valueOf(eItems[i].interval[1]);
-      txt+="</td></tr>";
+      txt+="</td>";
+      txt+="<td>"+attrMinMax.get(eItems[i].attr)[0]+"</td></tr>";
     }
     txt += "</table>";
     txt+="</body></html>";
