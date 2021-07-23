@@ -25,6 +25,10 @@ public class CommonExplanation {
    */
   public int nUses=0;
   /**
+   * Q value, also used in regression rules / trees
+   */
+  public float Q=0;
+  /**
    * Coordinate of this explanation in a 1D projection.
    */
   public double x1D=Double.NaN;
