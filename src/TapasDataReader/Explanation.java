@@ -41,13 +41,13 @@ public class Explanation {
     return eItemsCombined;
   }
 
-  public static ExplanationItem[] getExplItemsAsIntegeres (ExplanationItem ei[], Hashtable<String,int[]> attrs) {
+  public static ExplanationItem[] getExplItemsAsIntegeres (ExplanationItem ei[], Hashtable<String,float[]> attrs) {
     if (ei==null || ei.length==0)
       return null;
     ExplanationItem eii[]=new ExplanationItem[ei.length];
     for (int i=0; i<ei.length; i++) {
       eii[i]=ei[i].clone();
-      int minmax[]=attrs.get(ei[i].attr);
+      float minmax[]=attrs.get(ei[i].attr);
       eii[i].interval[0]=Math.max(minmax[0],Math.ceil(ei[i].interval[0]));
       eii[i].interval[1]=Math.min(minmax[1],Math.floor(ei[i].interval[1]));
       eii[i].isInteger=true;
@@ -56,7 +56,7 @@ public class Explanation {
   }
   
   public static double distance(ExplanationItem e1[], ExplanationItem e2[],
-                                Hashtable<String,int[]> attrMinMaxValues) {
+                                Hashtable<String,float[]> attrMinMaxValues) {
     if (e1==null || e1.length<1)
       if (e2==null) return 0; else return e2.length;
     if (e2==null || e2.length<1)
@@ -72,7 +72,7 @@ public class Explanation {
       if (i2<0)
         continue;
       d-=2; //corresponding items found
-      int minmax[]=attrMinMaxValues.get(e1[i].attr);
+      float minmax[]=attrMinMaxValues.get(e1[i].attr);
       double min=(minmax==null)?Double.NaN:minmax[0], max=(minmax==null)?Double.NaN:minmax[1];
       d+=IntervalDistance.distanceRelative(e1[i].interval[0],e1[i].interval[1],
           e2[i2].interval[0],e2[i2].interval[1],min,max);

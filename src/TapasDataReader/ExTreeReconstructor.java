@@ -6,7 +6,7 @@ public class ExTreeReconstructor {
   /**
    * Minimums and maximums for the attributes
    */
-  public Hashtable<String,int[]> attrMinMaxValues =null;
+  public Hashtable<String,float[]> attrMinMaxValues =null;
 
   public Hashtable<Integer,ExTreeNode> topNodes=null, topNodesInt=null;
   public Hashtable<Integer,ExTreeNode> topNodesExCombined =null, topNodesIntExCombined=null;
@@ -14,7 +14,7 @@ public class ExTreeReconstructor {
   public Hashtable<String,Integer> sectors=null;
   public Hashtable<String,Integer> attributesWithSectors=null;
   
-  public void setAttrMinMaxValues(Hashtable<String,int[]> attrMinMaxValues) {
+  public void setAttrMinMaxValues(Hashtable<String,float[]> attrMinMaxValues) {
     this.attrMinMaxValues=attrMinMaxValues;
   }
   
