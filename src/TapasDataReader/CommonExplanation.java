@@ -27,7 +27,7 @@ public class CommonExplanation {
   /**
    * Q value, also used in regression rules / trees
    */
-  public float Q=0;
+  public float minQ=0, maxQ=0, sumQ=0, meanQ=0;
   /**
    * Coordinate of this explanation in a 1D projection.
    */
@@ -43,7 +43,7 @@ public class CommonExplanation {
   public Color color=null;
   
   public String toString(){
-    String str="Action = "+action+"; used "+nUses+" times for "+uses.size()+" flights";
+    String str="Action = "+action+"; used "+nUses+" times for "+uses.size()+" distinct items (flights)";
     for (int i=0; i<eItems.length; i++) {
       str +="; "+eItems[i].attr;
       if (Double.isInfinite(eItems[i].interval[0]))
@@ -58,13 +58,19 @@ public class CommonExplanation {
     return str;
   }
   
-  public String toHTML (Hashtable<String,float[]> attrMinMax) {
+  public String toHTML(Hashtable<String,float[]> attrMinMax) {
     String txt="<html><body style=background-color:rgb(255,255,204)>";
     txt += "<table border=0 cellmargin=3 cellpadding=3 cellspacing=3>";
     txt+="<tr><td>Action </td><td>"+action+"</td></tr>";
-    txt+="<tr><td>Q </td><td>"+Q+"</td></tr>";
-    txt+="<tr><td>N of uses:</td><td>"+nUses+"</td></tr>";
-    txt+="<tr><td>N of data items:</td><td>"+uses.size()+"</td></tr>";
+    txt+="<tr><td>N uses:</td><td>"+nUses+"</td></tr>";
+    txt+="<tr><td>N distinct items (flights):</td><td>"+uses.size()+"</td></tr>";
+    txt += "</table>";
+    txt += "<table border=0 cellmargin=3 cellpadding=3 cellspacing=3>";
+    if (sumQ>0) {
+      txt+="<tr><td>mean Q</td><td>min Q</td><td>max Q</td></tr>";
+      txt+="<tr><td>"+String.format("%.4f",meanQ)+"</td><td>"+
+               String.format("%.4f",minQ)+"</td><td>"+String.format("%.4f",maxQ)+"</td></tr>";
+    }
     txt+="<tr><td>Feature</td><td>min</td><td>from</td><td>to</td><td>max</td></tr>";
     for (int i=0; i<eItems.length; i++) {
       txt+="<tr><td>"+eItems[i].attr+"</td>";
@@ -139,6 +145,8 @@ public class CommonExplanation {
     flightExpl.add(ex);
     cEx.uses.put(ex.FlightID,flightExpl);
     cEx.nUses=1;
+    if (!Float.isNaN(ex.Q))
+      cEx.minQ=cEx.maxQ=cEx.sumQ=cEx.meanQ=ex.Q;
     return cEx;
   }
   
@@ -276,6 +284,14 @@ public class CommonExplanation {
     flightExpl.add(exToAdd);
     cEx.uses.put(exToAdd.FlightID,flightExpl);
     ++cEx.nUses;
+    if (!Float.isNaN(exToAdd.Q)) {
+      cEx.sumQ+=exToAdd.Q;
+      cEx.meanQ=cEx.sumQ/cEx.nUses;
+      if (cEx.minQ>exToAdd.Q)
+        cEx.minQ=exToAdd.Q;
+      if (cEx.maxQ<exToAdd.Q)
+        cEx.maxQ=exToAdd.Q;
+    }
     return exList;
   }
   
