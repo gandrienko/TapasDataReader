@@ -61,27 +61,29 @@ public class CommonExplanation {
   public String toHTML(Hashtable<String,float[]> attrMinMax) {
     String txt="<html><body style=background-color:rgb(255,255,204)>";
     txt += "<table border=0 cellmargin=3 cellpadding=3 cellspacing=3>";
-    txt+="<tr><td>Action </td><td>"+action+"</td></tr>";
-    txt+="<tr><td>N uses:</td><td>"+nUses+"</td></tr>";
-    txt+="<tr><td>N distinct items (flights):</td><td>"+uses.size()+"</td></tr>";
-    txt += "</table>";
-    txt += "<table border=0 cellmargin=3 cellpadding=3 cellspacing=3>";
+    txt+="<tr><td>Action </td><td>"+action+"</td><td>Mean Q</td><td>"+String.format("%.4f",meanQ)+"</td></tr>";
+    txt+="<tr><td>N uses:</td><td>"+nUses+"</td><td>Min Q</td><td>"+String.format("%.4f",minQ)+"</td></tr>";
+    txt+="<tr><td>N distinct items (flights):</td><td>"+uses.size()+"</td><td>Max Q</td><td>"+String.format("%.4f",maxQ)+"</td></tr>";
+    txt += "<tr></tr></table>";
+    txt += "<table border=1 cellmargin=3 cellpadding=3 cellspacing=3>";
+/*
     if (sumQ>0) {
       txt+="<tr><td>mean Q</td><td>min Q</td><td>max Q</td></tr>";
       txt+="<tr><td>"+String.format("%.4f",meanQ)+"</td><td>"+
                String.format("%.4f",minQ)+"</td><td>"+String.format("%.4f",maxQ)+"</td></tr>";
     }
+*/
     txt+="<tr><td>Feature</td><td>min</td><td>from</td><td>to</td><td>max</td></tr>";
     for (int i=0; i<eItems.length; i++) {
-      txt+="<tr><td>"+eItems[i].attr+"</td>";
-      txt+="<td>"+attrMinMax.get(eItems[i].attr)[0]+"</td><td>";
+      txt+="<tr align=right><td>"+eItems[i].attr+"</td>";
+      txt+="<td>"+String.format("%.4f",attrMinMax.get(eItems[i].attr)[0])+"</td><td>";
       if (!Double.isInfinite(eItems[i].interval[0]))
-        txt+=(eItems[i].isInteger)?String.valueOf((int)eItems[i].interval[0]):String.valueOf(eItems[i].interval[0]);
+        txt+=(eItems[i].isInteger)?String.valueOf((int)eItems[i].interval[0]):String.format("%.4f",eItems[i].interval[0]);
       txt+="</td><td>";
       if (!Double.isInfinite(eItems[i].interval[1]))
-        txt+=(eItems[i].isInteger)?String.valueOf((int)eItems[i].interval[1]):String.valueOf(eItems[i].interval[1]);
+        txt+=(eItems[i].isInteger)?String.valueOf((int)eItems[i].interval[1]):String.format("%.4f",eItems[i].interval[1]);
       txt+="</td>";
-      txt+="<td>"+attrMinMax.get(eItems[i].attr)[1]+"</td></tr>";
+      txt+="<td>"+String.format("%.4f",attrMinMax.get(eItems[i].attr)[1])+"</td></tr>";
     }
     txt += "</table>";
     txt+="</body></html>";
