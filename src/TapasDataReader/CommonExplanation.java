@@ -69,25 +69,27 @@ public class CommonExplanation {
     txt+="<tr align=right><td>N distinct items (flights):</td><td>"+uses.size()+"</td><td>Max Q</td><td>"+String.format("%.4f",maxQ)+"</td></tr>";
     txt += "<tr></tr></table>";
     txt += "<table border=1 cellmargin=3 cellpadding=3 cellspacing=3>";
-/*
-    if (sumQ>0) {
-      txt+="<tr><td>mean Q</td><td>min Q</td><td>max Q</td></tr>";
-      txt+="<tr><td>"+String.format("%.4f",meanQ)+"</td><td>"+
-               String.format("%.4f",minQ)+"</td><td>"+String.format("%.4f",maxQ)+"</td></tr>";
-    }
-*/
+
     txt+="<tr><td>Feature</td><td>min</td><td>from</td><td>to</td><td>max</td></tr>";
     for (int i=0; i<eItems.length; i++) {
       boolean b=eItems[i].attr.equals(columnAtPointer);
       txt+="<tr align=right><td>"+((b)?"<b>":"")+eItems[i].attr+((b)?"</b>":"")+"</td>";
-      txt+="<td>"+String.format("%.4f",attrMinMax.get(eItems[i].attr)[0])+"</td><td>";
+      String strValue=(attrMinMax!=null && attrMinMax.get(eItems[i].attr)!=null)?
+                          String.format("%.4f",attrMinMax.get(eItems[i].attr)[0]):"";
+      txt+="<td>"+strValue+"</td><td>";
       if (!Double.isInfinite(eItems[i].interval[0]))
         txt+=(eItems[i].isInteger)?String.valueOf((int)eItems[i].interval[0]):String.format("%.4f",eItems[i].interval[0]);
+      else
+        txt+="- inf";
       txt+="</td><td>";
       if (!Double.isInfinite(eItems[i].interval[1]))
         txt+=(eItems[i].isInteger)?String.valueOf((int)eItems[i].interval[1]):String.format("%.4f",eItems[i].interval[1]);
+      else
+        txt+="+ inf";
       txt+="</td>";
-      txt+="<td>"+String.format("%.4f",attrMinMax.get(eItems[i].attr)[1])+"</td></tr>";
+      strValue=(attrMinMax!=null && attrMinMax.get(eItems[i].attr)!=null)?
+                   String.format("%.4f",attrMinMax.get(eItems[i].attr)[1]):"";
+      txt+="<td>"+strValue+"</td></tr>";
     }
     txt += "</table>";
     txt+="</body></html>";
