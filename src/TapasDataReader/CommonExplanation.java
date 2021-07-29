@@ -27,7 +27,8 @@ public class CommonExplanation {
   /**
    * Q value, also used in regression rules / trees
    */
-  public float minQ=0, maxQ=0, sumQ=0, meanQ=0;
+  public float minQ=Float.NaN, maxQ=Float.NaN, meanQ=Float.NaN;
+  public double sumQ=0;
   /**
    * Coordinate of this explanation in a 1D projection.
    */
@@ -153,8 +154,10 @@ public class CommonExplanation {
     flightExpl.add(ex);
     cEx.uses.put(ex.FlightID,flightExpl);
     cEx.nUses=1;
-    if (!Float.isNaN(ex.Q))
-      cEx.minQ=cEx.maxQ=cEx.sumQ=cEx.meanQ=ex.Q;
+    if (!Float.isNaN(ex.Q)) {
+      cEx.minQ = cEx.maxQ = cEx.meanQ = ex.Q;
+      cEx.sumQ=ex.Q;
+    }
     return cEx;
   }
   
@@ -294,10 +297,10 @@ public class CommonExplanation {
     ++cEx.nUses;
     if (!Float.isNaN(exToAdd.Q)) {
       cEx.sumQ+=exToAdd.Q;
-      cEx.meanQ=cEx.sumQ/cEx.nUses;
-      if (cEx.nUses==1 || cEx.minQ>exToAdd.Q)
+      cEx.meanQ=(float)cEx.sumQ/cEx.nUses;
+      if (Float.isNaN(cEx.minQ) || cEx.minQ>exToAdd.Q)
         cEx.minQ=exToAdd.Q;
-      if (cEx.nUses==1 || cEx.maxQ<exToAdd.Q)
+      if (Float.isNaN(cEx.maxQ) || cEx.maxQ<exToAdd.Q)
         cEx.maxQ=exToAdd.Q;
     }
     return exList;
