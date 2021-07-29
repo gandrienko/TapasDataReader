@@ -43,6 +43,24 @@ public class CommonExplanation {
    */
   public Color color=null;
   
+  public boolean equals(Object obj) {
+    if (obj==null || !(obj instanceof CommonExplanation))
+      return false;
+    CommonExplanation cEx=(CommonExplanation)obj;
+    if (this.action!=cEx.action)
+      return false;
+    if (this.eItems==null)
+      return cEx.eItems==null;
+    if (cEx.eItems==null)
+      return false;
+    if (this.eItems.length!=cEx.eItems.length)
+      return false;
+    for (int i=0; i<eItems.length; i++)
+      if (!eItems[i].equals(cEx.eItems[i]))
+        return false;
+    return true;
+  }
+  
   public String toString(){
     String str="Action = "+action+"; used "+nUses+" times for "+uses.size()+" distinct items (flights)";
     for (int i=0; i<eItems.length; i++) {

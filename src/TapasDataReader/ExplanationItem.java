@@ -23,6 +23,18 @@ public class ExplanationItem {
     return ei;
   }
   
+  public boolean equals(Object obj) {
+    if (obj==null || !(obj instanceof ExplanationItem))
+      return false;
+    return equals((ExplanationItem)obj);
+  }
+  
+  public boolean equals(ExplanationItem e) {
+    if (e==null)
+      return false;
+    return sameCondition(e);
+  }
+  
   
   public boolean sameCondition(ExplanationItem ei) {
     if (ei.attr==null)
