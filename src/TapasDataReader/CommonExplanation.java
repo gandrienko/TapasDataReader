@@ -77,9 +77,9 @@ public class CommonExplanation {
     return str;
   }
 
-  public String toHTML (Hashtable<String,float[]> attrMinMax) { return toHTML(attrMinMax,""); }
+  public String toHTML (Hashtable<String,float[]> attrMinMax) { return toHTML(attrMinMax,"",null); }
 
-  public String toHTML (Hashtable<String,float[]> attrMinMax, String columnAtPointer) {
+  public String toHTML (Hashtable<String,float[]> attrMinMax, String columnAtPointer, String imgFile) {
     //System.out.println(columnAtPointer);
     String txt="<html><body style=background-color:rgb(255,255,204)>";
     txt += "<table border=0 cellmargin=3 cellpadding=3 cellspacing=3 align=center>";
@@ -87,6 +87,8 @@ public class CommonExplanation {
     txt+="<tr align=right><td>N uses:</td><td>"+nUses+"</td><td>Min Q</td><td>"+String.format("%.4f",minQ)+"</td></tr>";
     txt+="<tr align=right><td>N distinct items (flights):</td><td>"+uses.size()+"</td><td>Max Q</td><td>"+String.format("%.4f",maxQ)+"</td></tr>";
     txt += "<tr></tr></table>";
+    if (imgFile!=null)
+      txt+="<p align=center><img border=1 src=file:"+imgFile+" width=100%></p>";
     txt += "<table border=1 cellmargin=3 cellpadding=3 cellspacing=3>";
 
     txt+="<tr><td>Feature</td><td>min</td><td>from</td><td>to</td><td>max</td></tr>";
