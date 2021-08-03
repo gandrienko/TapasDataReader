@@ -8,6 +8,15 @@ import java.util.Hashtable;
  * Represents a re-occurring explanation.
  */
 public class CommonExplanation {
+  /**
+   * Numeric identifier of the rule
+   */
+  public int numId=-1;
+  /**
+   * Numeric idntifier of the upper rule in a hierarchy, if any
+   */
+  public int upperId=-1;
+  
   public ExplanationItem eItems[]=null;
   /**
    * The action (decision) explained by this explanation.
@@ -82,6 +91,11 @@ public class CommonExplanation {
   public String toHTML (Hashtable<String,float[]> attrMinMax, String columnAtPointer, String imgFile) {
     //System.out.println(columnAtPointer);
     String txt="<html><body style=background-color:rgb(255,255,204)>";
+    if (numId>=0)
+      if (upperId>=0)
+        txt+="Rule <b>"+numId+"</b>; upper rule <b>"+upperId+"</b>";
+      else
+        txt+="Rule <b>"+numId+"</b>";
     txt += "<table border=0 cellmargin=3 cellpadding=3 cellspacing=3 align=center>";
     txt+="<tr align=right><td>Action </td><td>"+action+"</td><td>Mean Q</td><td>"+String.format("%.4f",meanQ)+"</td></tr>";
     txt+="<tr align=right><td>N uses:</td><td>"+nUses+"</td><td>Min Q</td><td>"+String.format("%.4f",minQ)+"</td></tr>";
