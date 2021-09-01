@@ -30,7 +30,7 @@ public class RenderLabelBarChart extends JLabel_BarChart implements TableCellRen
     else {
       setValue(v);
       if (bModeTimeOfDay)
-        setText(String.format("%02d", v / 60) + ":" + String.format("%02d", v % 60));
+        setText(String.format("%02f", v / 60) + ":" + String.format("%02f", v % 60));
       else
         if (value instanceof Integer)
           setText(""+((Integer)value));
