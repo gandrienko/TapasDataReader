@@ -375,6 +375,47 @@ public class CommonExplanation {
       if (e2==null) return 0; else return e2.length;
     if (e2==null || e2.length<1)
       return e1.length;
+    double d=0;
+    boolean e2InE1[]=new boolean[e2.length];
+    for (int i=0; i<e2.length; i++)
+      e2InE1[i]=false;
+    int nCommon=0;
+    for (int i=0; i<e1.length; i++) {
+      double inter1[]=e1[i].interval;
+      float minmax[]=attrMinMaxValues.get(e1[i].attr);
+      double dMinMax[]={(minmax==null)?Double.NEGATIVE_INFINITY:minmax[0],
+          (minmax==null)?Double.POSITIVE_INFINITY:minmax[1]};
+      int i2=-1;
+      for (int j=0; j<e2.length && i2<0; j++)
+        if (e1[i].attr.equals(e2[j].attr))
+          i2=j;
+      if (i2>=0) {
+        e2InE1[i2]=true;
+        ++nCommon;
+      }
+      double inter2[]=(i2>=0)?e2[i2].interval:dMinMax;
+      d+=IntervalDistance.distanceRelative(inter1[0],inter1[1],
+          inter2[0],inter2[1],dMinMax[0],dMinMax[1]);
+    }
+    if (nCommon<e2.length)
+      for (int i=0; i<e2.length; i++)
+        if (!e2InE1[i]) {
+          float minmax[]=attrMinMaxValues.get(e2[i].attr);
+          double dMinMax[]={(minmax==null)?Double.NEGATIVE_INFINITY:minmax[0],
+              (minmax==null)?Double.POSITIVE_INFINITY:minmax[1]};
+          d+=IntervalDistance.distanceRelative(e2[i].interval[0],e2[i].interval[1],
+              dMinMax[0],dMinMax[1],dMinMax[0],dMinMax[1]);
+        }
+    return d;
+  }
+
+  /*
+  public static double distance(ExplanationItem e1[], ExplanationItem e2[],
+                                Hashtable<String,float[]> attrMinMaxValues) {
+    if (e1==null || e1.length<1)
+      if (e2==null) return 0; else return e2.length;
+    if (e2==null || e2.length<1)
+      return e1.length;
     double d=e1.length+e2.length;
     for (int i=0; i<e1.length; i++) {
       int i2=-1;
@@ -391,4 +432,5 @@ public class CommonExplanation {
     }
     return d;
   }
+  */
 }
