@@ -1,6 +1,7 @@
 package TapasDataReader;
 
 import java.awt.Color;
+import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Hashtable;
 
@@ -33,6 +34,10 @@ public class CommonExplanation {
    * Total number of uses of this explanation.
    */
   public int nUses=0;
+  /**
+   * The numbers of right and wrong applications of the rule to data instances (called cases).
+   */
+  public int nCasesRight=0, nCasesWrong=0;
   /**
    * Q value, also used in regression rules / trees
    */
@@ -159,6 +164,42 @@ public class CommonExplanation {
       subsumes = i2>=0 && includes(e1[i].interval,e2[i2].interval);
     }
     return subsumes;
+  }
+  
+  /**
+   * Counts the numbers of right and wrong applications of the explanation or rule to data instances.
+   * @param exData  - data instances
+   */
+  public void countRightAndWrongApplications(AbstractList<Explanation> exData, boolean byAction) {
+    nCasesRight=nCasesWrong=0;
+    if (exData==null || exData.isEmpty() || eItems==null)
+      return;
+    for (Explanation ex:exData) {
+      boolean ruleApplies=true;
+      for (int i=0; i<eItems.length && ruleApplies; i++) {
+        double range[]=eItems[i].interval, value=Double.NaN;
+        for (int j=0; j<ex.eItems.length && Double.isNaN(value); j++)
+          if (eItems[i].attr.equals(ex.eItems[j].attr)) {
+            value=ex.eItems[j].value;
+            break;
+          }
+        ruleApplies=!Double.isNaN(value) &&
+                        (Double.isNaN(range[0]) || Double.isInfinite(range[0]) || value>=range[0]) &&
+                        (Double.isNaN(range[1]) || Double.isInfinite(range[1]) || value<=range[1]);
+      }
+      if (!ruleApplies)
+        continue;
+      if (byAction)
+        if (this.action==ex.action)
+          ++nCasesRight;
+        else
+          ++nCasesWrong;
+      else
+        if (ex.Q>=this.minQ && ex.Q<=this.maxQ)
+          ++nCasesRight;
+        else
+          ++nCasesWrong;
+    }
   }
   
   public static boolean includes(double interval1[], double interval2[]) {
