@@ -35,6 +35,10 @@ public class CommonExplanation {
    */
   public int nUses=0;
   /**
+   * Applications of this explanation or rule to data
+   */
+  public RuleApplication applications[]=null;
+  /**
    * The numbers of right and wrong applications of the rule to data instances (called cases).
    */
   public int nCasesRight=0, nCasesWrong=0;
@@ -174,6 +178,9 @@ public class CommonExplanation {
     nCasesRight=nCasesWrong=0;
     if (exData==null || exData.isEmpty() || eItems==null)
       return;
+    
+    ArrayList<RuleApplication> appList=new ArrayList<RuleApplication>(100);
+    
     for (Explanation ex:exData) {
       boolean ruleApplies=true;
       for (int i=0; i<eItems.length && ruleApplies; i++) {
@@ -189,17 +196,22 @@ public class CommonExplanation {
       }
       if (!ruleApplies)
         continue;
+      
+      RuleApplication app=new RuleApplication();
+      app.data=ex;
       if (byAction)
-        if (this.action==ex.action)
-          ++nCasesRight;
-        else
-          ++nCasesWrong;
+        app.isRight= this.action==ex.action;
       else
-        if (ex.Q>=this.minQ && ex.Q<=this.maxQ)
+        app.isRight= ex.Q>=this.minQ && ex.Q<=this.maxQ;
+      appList.add(app);
+      
+      if (app.isRight)
           ++nCasesRight;
         else
           ++nCasesWrong;
     }
+    
+    applications=(appList==null)?null:appList.toArray(new RuleApplication[appList.size()]);
   }
   
   public static boolean includes(double interval1[], double interval2[]) {
