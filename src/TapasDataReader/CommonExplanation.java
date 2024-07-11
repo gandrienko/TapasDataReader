@@ -78,9 +78,13 @@ public class CommonExplanation {
         return false;
     return true;
   }
+
+  public int getUsesCount() {
+    return (uses==null)?0:uses.size();
+  }
   
   public String toString(){
-    String str="Action = "+action+"; used "+nUses+" times for "+uses.size()+" distinct items (flights)";
+    String str="Action = "+action+"; used "+nUses+" times for "+getUsesCount()+" distinct items (flights)";
     for (int i=0; i<eItems.length; i++) {
       str +="; "+eItems[i].attr;
       if (Double.isInfinite(eItems[i].interval[0]))
@@ -108,7 +112,7 @@ public class CommonExplanation {
     txt += "<table border=0 cellmargin=3 cellpadding=3 cellspacing=3 align=center>";
     txt+="<tr align=right><td>Action </td><td>"+action+"</td><td>Mean Q</td><td>"+String.format("%.4f",meanQ)+"</td></tr>";
     txt+="<tr align=right><td>N uses:</td><td>"+nUses+"</td><td>Min Q</td><td>"+String.format("%.4f",minQ)+"</td></tr>";
-    txt+="<tr align=right><td>N distinct items (flights):</td><td>"+uses.size()+"</td><td>Max Q</td><td>"+String.format("%.4f",maxQ)+"</td></tr>";
+    txt+="<tr align=right><td>N distinct items (flights):</td><td>"+getUsesCount()+"</td><td>Max Q</td><td>"+String.format("%.4f",maxQ)+"</td></tr>";
     txt += "<tr></tr></table>";
     if (imgFile!=null)
       txt+="<p align=center><img border=1 src=file:"+imgFile+" width=100%></p>";
