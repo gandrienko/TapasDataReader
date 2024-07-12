@@ -24,6 +24,10 @@ public class CommonExplanation {
    */
   public int action=-1;
   /**
+   * Number of duplicates of this explanation/rule (may occur in a decision forest)
+   */
+  public int nSame=1;
+  /**
    * Individual explanations where the same attributes and conditions are used.
    * The individual explanations are grouped by the identifiers of the flights they refer to.
    * The keys of the hash table are the flight identifiers, the elements are the corresponding
@@ -81,6 +85,12 @@ public class CommonExplanation {
 
   public int getUsesCount() {
     return (uses==null)?0:uses.size();
+  }
+
+  public int getApplicationsCount() {
+    if (applications==null)
+      return 0;
+    return applications.length;
   }
   
   public String toString(){
