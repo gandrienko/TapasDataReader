@@ -125,9 +125,14 @@ public class CommonExplanation {
       else
         txt+="Rule <b>"+numId+"</b>";
     txt += "<table border=0 cellmargin=3 cellpadding=3 cellspacing=3 align=center>";
-    txt+="<tr align=right><td>Action </td><td>"+action+"</td><td>Mean Q</td><td>"+String.format("%.4f",meanQ)+"</td></tr>";
-    txt+="<tr align=right><td>N uses:</td><td>"+nUses+"</td><td>Min Q</td><td>"+String.format("%.4f",minQ)+"</td></tr>";
-    txt+="<tr align=right><td>N distinct items (flights):</td><td>"+getUsesCount()+"</td><td>Max Q</td><td>"+String.format("%.4f",maxQ)+"</td></tr>";
+    txt+="<tr align=right><td>Action </td><td><b>"+action+"</b></td>";
+    if (!Float.isNaN(meanQ))
+      txt+="<td>Mean Q</td><td>"+String.format("%.4f",meanQ)+"</td>";
+    txt+="</tr>";
+    if (!Float.isNaN(minQ))
+      txt+="<tr align=right><td>N uses:</td><td>"+nUses+"</td><td>Min Q</td><td>"+String.format("%.4f",minQ)+"</td></tr>";
+    if (!Float.isNaN(maxQ))
+      txt+="<tr align=right><td>N distinct items (flights):</td><td>"+getUsesCount()+"</td><td>Max Q</td><td>"+String.format("%.4f",maxQ)+"</td></tr>";
     txt += "<tr></tr></table>";
     if (imgFile!=null)
       txt+="<p align=center><img border=1 src=file:"+imgFile+" width=100%></p>";
