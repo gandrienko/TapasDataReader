@@ -89,7 +89,7 @@ public class CommonExplanation {
   }
 
   public int getUsesCount() {
-    return (uses==null)?0:uses.size();
+    return (uses!=null)?uses.size():nUses;
   }
 
   public int getApplicationsCount() {
