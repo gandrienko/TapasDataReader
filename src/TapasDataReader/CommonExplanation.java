@@ -55,7 +55,7 @@ public class CommonExplanation {
    * Q value, also used in regression rules / trees
    */
   public float minQ=Float.NaN, maxQ=Float.NaN, meanQ=Float.NaN;
-  public double sumQ=0;
+  public double sumQ=Double.NaN;
   /**
    * Coordinate of this explanation in a 1D projection.
    */
