@@ -17,6 +17,11 @@ public class CommonExplanation {
    * Numeric idntifier of the upper rule in a hierarchy, if any
    */
   public int upperId=-1;
+  /**
+   * If rules originate from a decision forest (collection of trees), this is the
+   * identifier of the tree from which the rule has been derived.
+   */
+  public int treeId=-1;
   
   public ExplanationItem eItems[]=null;
   /**
