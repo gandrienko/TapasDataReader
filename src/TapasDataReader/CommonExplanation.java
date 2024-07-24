@@ -69,6 +69,21 @@ public class CommonExplanation {
    * A color assigned to this explanation.
    */
   public Color color=null;
+
+  /**
+   * Returns the value interval of the feature (attribute) with the given name or
+   * null if no condition with this feature
+   * @param attrName - feature name
+   * @return value interval (array of length 2) or null
+   */
+  public double[] getFeatureInterval(String attrName) {
+    if (attrName==null || eItems==null)
+      return null;
+    for (ExplanationItem ei:eItems)
+      if (ei.attr.equals(attrName))
+        return ei.interval;
+    return null;
+  }
   
   public boolean equals(Object obj) {
     if (obj==null || !(obj instanceof CommonExplanation))
