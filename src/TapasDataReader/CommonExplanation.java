@@ -20,8 +20,9 @@ public class CommonExplanation {
   /**
    * If rules originate from a decision forest (collection of trees), this is the
    * identifier of the tree from which the rule has been derived.
+   * Additionally, if the trees were clustered, there is also the identifier of the tree cluster.
    */
-  public int treeId=-1;
+  public int treeId=-1, treeCluster=-1;
   
   public ExplanationItem eItems[]=null;
   /**
