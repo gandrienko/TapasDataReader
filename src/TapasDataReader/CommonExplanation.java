@@ -3,6 +3,7 @@ package TapasDataReader;
 import java.awt.Color;
 import java.util.AbstractList;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Hashtable;
 
 /**
@@ -84,6 +85,15 @@ public class CommonExplanation {
       if (ei.attr.equals(attrName))
         return ei.interval;
     return null;
+  }
+  
+  public boolean hasFeature(String attrName) {
+    if (attrName==null || eItems==null)
+      return false;
+    for (ExplanationItem ei:eItems)
+      if (ei.attr.equals(attrName))
+        return true;
+    return false;
   }
   
   public boolean equals(Object obj) {
@@ -510,6 +520,31 @@ public class CommonExplanation {
           d+=IntervalDistance.distanceRelative(e2[i].interval[0],e2[i].interval[1],
               dMinMax[0],dMinMax[1],dMinMax[0],dMinMax[1]);
         }
+    return d;
+  }
+  
+  public static double distance(ExplanationItem e1[], ExplanationItem e2[],
+                                HashSet<String> featuresToUse,
+                                Hashtable<String,float[]> attrMinMaxValues) {
+    if (featuresToUse==null || featuresToUse.isEmpty())
+      return distance(e1,e2,attrMinMaxValues);
+    if (e1==null && e2==null)
+      return 0;
+    double d=0;
+    HashSet<String> featuresChecked=new HashSet<String>(featuresToUse.size());
+    for (String attr:featuresToUse) {
+      int i1=-1, i2=-1;
+      if (e1!=null)
+        for (int i=0; i<e1.length && i1<0; i++)
+          if (attr.equals(e1[i].attr))
+            i1=i;
+      if (e2!=null)
+        for (int i=0; i<e2.length && i2<0; i++)
+          if (attr.equals(e2[i].attr))
+            i2=i;
+      if (i1<0 && i2<0)
+        continue;
+    }
     return d;
   }
 
