@@ -482,7 +482,8 @@ public class CommonExplanation {
     }
     return d;
   }
-  
+
+  /*
   public static double distance(ExplanationItem e1[], ExplanationItem e2[],
                                 Hashtable<String,float[]> attrMinMaxValues) {
     if (e1==null || e1.length<1)
@@ -496,7 +497,7 @@ public class CommonExplanation {
     int nCommon=0;
     for (int i=0; i<e1.length; i++) {
       double inter1[]=e1[i].interval;
-      float minmax[]=attrMinMaxValues.get(e1[i].attr);
+      float minmax[]=(attrMinMaxValues==null)?null:attrMinMaxValues.get(e1[i].attr);
       double dMinMax[]={(minmax==null)?Double.NEGATIVE_INFINITY:minmax[0],
           (minmax==null)?Double.POSITIVE_INFINITY:minmax[1]};
       int i2=-1;
@@ -514,7 +515,7 @@ public class CommonExplanation {
     if (nCommon<e2.length)
       for (int i=0; i<e2.length; i++)
         if (!e2InE1[i]) {
-          float minmax[]=attrMinMaxValues.get(e2[i].attr);
+          float minmax[]=(attrMinMaxValues==null)?null:attrMinMaxValues.get(e2[i].attr);
           double dMinMax[]={(minmax==null)?Double.NEGATIVE_INFINITY:minmax[0],
               (minmax==null)?Double.POSITIVE_INFINITY:minmax[1]};
           d+=IntervalDistance.distanceRelative(e2[i].interval[0],e2[i].interval[1],
@@ -522,14 +523,49 @@ public class CommonExplanation {
         }
     return d;
   }
-  
+  */
+
+  public static double[][] computeDistances(ArrayList<CommonExplanation> explanations,
+                                            HashSet<String> featuresToUse,
+                                            Hashtable<String,float[]> attrMinMaxValues) {
+    if (explanations==null || explanations.size()<2)
+      return null;
+    if (featuresToUse==null || featuresToUse.isEmpty())
+      return computeDistances(explanations,attrMinMaxValues);
+    double d[][]=new double[explanations.size()][explanations.size()];
+    for (int i=0; i<d.length; i++) {
+      d[i][i]=0;
+      for (int j=i+1; j<d.length; j++)
+        d[i][j]=d[j][i]=distance(explanations.get(i).eItems,
+            explanations.get(j).eItems,featuresToUse,attrMinMaxValues);
+    }
+    return d;
+  }
+
+  public static double distance(ExplanationItem e1[], ExplanationItem e2[],
+                                Hashtable<String,float[]> attrMinMaxValues) {
+    if (e1==null && e2==null)
+      return 0;
+    HashSet<String> features=new HashSet<String>(50);
+    if (e1!=null)
+      for (ExplanationItem e:e1)
+        if (!features.contains(e.attr))
+          features.add(e.attr);
+    if (e2!=null)
+      for (ExplanationItem e:e2)
+        if (!features.contains(e.attr))
+          features.add(e.attr);
+    return distance(e1,e2,features,attrMinMaxValues);
+  }
+
+
   public static double distance(ExplanationItem e1[], ExplanationItem e2[],
                                 HashSet<String> featuresToUse,
                                 Hashtable<String,float[]> attrMinMaxValues) {
-    if (featuresToUse==null || featuresToUse.isEmpty())
-      return distance(e1,e2,attrMinMaxValues);
     if (e1==null && e2==null)
       return 0;
+    if (featuresToUse==null || featuresToUse.isEmpty())
+      return distance(e1,e2,attrMinMaxValues);
     double d=0;
     HashSet<String> featuresChecked=new HashSet<String>(featuresToUse.size());
     for (String attr:featuresToUse) {
@@ -544,6 +580,13 @@ public class CommonExplanation {
             i2=i;
       if (i1<0 && i2<0)
         continue;
+      float minmax[]=(attrMinMaxValues==null)?null:attrMinMaxValues.get(attr);
+      double dMinMax[]={(minmax==null)?Double.NEGATIVE_INFINITY:minmax[0],
+          (minmax==null)?Double.POSITIVE_INFINITY:minmax[1]};
+      double inter1[]=(i1>=0)?e1[i1].interval:dMinMax;
+      double inter2[]=(i2>=0)?e2[i2].interval:dMinMax;
+      d+=IntervalDistance.distanceRelative(inter1[0],inter1[1],
+          inter2[0],inter2[1],dMinMax[0],dMinMax[1]);
     }
     return d;
   }
