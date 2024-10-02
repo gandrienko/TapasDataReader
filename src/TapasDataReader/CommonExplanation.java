@@ -125,7 +125,7 @@ public class CommonExplanation {
   }
   
   public String toString(){
-    String str="Action = "+action+"; used "+nUses+" times for "+getUsesCount()+" distinct items (flights)";
+    String str="Class = "+action+"; used "+nUses+" times for "+getUsesCount()+" distinct items (flights)";
     for (int i=0; i<eItems.length; i++) {
       str +="; "+eItems[i].attr;
       if (Double.isInfinite(eItems[i].interval[0]))
@@ -151,7 +151,7 @@ public class CommonExplanation {
       else
         txt+="Rule <b>"+numId+"</b>";
     txt += "<table border=0 cellmargin=3 cellpadding=3 cellspacing=3 align=center>";
-    txt+="<tr align=right><td>Action </td><td><b>"+action+"</b></td>";
+    txt+="<tr align=right><td>Class </td><td><b>"+action+"</b></td>";
     if (!Float.isNaN(meanQ))
       txt+="<td>Mean Q</td><td>"+String.format("%.4f",meanQ)+"</td>";
     txt+="</tr>";
