@@ -35,6 +35,12 @@ public class CommonExplanation {
    */
   public int nSame=1;
   /**
+   * The "weight" of this rule, i.e., how many points it will have in voting among all rules applicable
+   * to the same data instance. Initially, the weights of all rules equal 1. When to or more rules are
+   * combined, the weight of the resulting rule equals is the sum of the weights of the original rules.
+   */
+  public int weight=1;
+  /**
    * Individual explanations where the same attributes and conditions are used.
    * The individual explanations are grouped by the identifiers of the flights they refer to.
    * The keys of the hash table are the flight identifiers, the elements are the corresponding
