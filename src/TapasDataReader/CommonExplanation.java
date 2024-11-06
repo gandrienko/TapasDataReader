@@ -146,16 +146,21 @@ public class CommonExplanation {
     return str;
   }
 
-  public String toHTML (ArrayList<String> listOfFeatures, Hashtable<String,float[]> attrMinMax) { return toHTML(listOfFeatures,attrMinMax,"",null); }
+  public String toHTML (ArrayList<String> listOfFeatures, Hashtable<String,float[]> attrMinMax) {
+    return toHTML(listOfFeatures,attrMinMax,"",null);
+  }
 
-  public String toHTML (ArrayList<String> listOfFeatures, Hashtable<String,float[]> attrMinMax, String columnAtPointer, String imgFile) {
+  public String toHTML (ArrayList<String> listOfFeatures, Hashtable<String,float[]> attrMinMax,
+                        String columnAtPointer, String imgFile) {
     //System.out.println(columnAtPointer);
     String txt="<html><body style=background-color:rgb(255,255,204)>";
+    txt+="<p style=\"text-align:center;\">";
     if (numId>=0)
       if (upperId>=0)
         txt+="Rule <b>"+numId+"</b>; upper rule <b>"+upperId+"</b>";
       else
         txt+="Rule <b>"+numId+"</b>";
+    txt+="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Weight = "+weight+"</p>";
     txt += "<table border=0 cellmargin=3 cellpadding=3 cellspacing=3 align=center>";
     txt+="<tr align=right><td>Class </td><td><b>"+action+"</b></td>";
     if (!Float.isNaN(meanQ))
