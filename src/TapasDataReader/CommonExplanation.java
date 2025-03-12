@@ -131,7 +131,12 @@ public class CommonExplanation {
   }
   
   public String toString(){
-    String str="Class = "+action+"; used "+nUses+" times for "+getUsesCount()+" distinct items (flights)";
+    String str=((Double.isNaN(meanQ))?"Class = "+action:
+        (minQ<maxQ)?String.format("Range = [%.3f,%.3f]",minQ,maxQ):
+            String.format("Value = %.3f",meanQ))+
+        "; applied "+nUses+" times";
+    if (nCasesRight>0 || nCasesWrong>0)
+      str+="; right:wrong = "+nCasesRight+":"+nCasesWrong;
     for (int i=0; i<eItems.length; i++) {
       str +="; "+eItems[i].attr;
       if (Double.isInfinite(eItems[i].interval[0]))
@@ -169,7 +174,7 @@ public class CommonExplanation {
     if (!Float.isNaN(minQ))
       txt+="<tr align=right><td>N uses:</td><td>"+nUses+"</td><td>Min Q</td><td>"+String.format("%.4f",minQ)+"</td></tr>";
     if (!Float.isNaN(maxQ))
-      txt+="<tr align=right><td>N distinct items (flights):</td><td>"+getUsesCount()+"</td><td>Max Q</td><td>"+String.format("%.4f",maxQ)+"</td></tr>";
+      txt+="<tr align=right><td>N distinct items:</td><td>"+getUsesCount()+"</td><td>Max Q</td><td>"+String.format("%.4f",maxQ)+"</td></tr>";
     txt += "<tr></tr></table>";
     if (imgFile!=null)
       txt+="<p align=center><img border=1 src=file:"+imgFile+" width=100%></p>";
