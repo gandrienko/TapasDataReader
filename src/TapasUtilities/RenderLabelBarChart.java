@@ -40,7 +40,7 @@ public class RenderLabelBarChart extends JLabel_BarChart implements TableCellRen
         if (value instanceof Integer)
           setText(""+((Integer)value));
         else
-          setText(String.format("%.5f",v));
+          setText(String.format("%.3f",v));
     }
     if (isSelected)
       setBackground(table.getSelectionBackground());
