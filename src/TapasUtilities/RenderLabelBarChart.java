@@ -5,15 +5,20 @@ import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 
 public class RenderLabelBarChart extends JLabel_BarChart implements TableCellRenderer {
-  boolean bModeTimeOfDay=false;
-  float min,max;
+  protected boolean bModeTimeOfDay=false;
+
   public RenderLabelBarChart(float min, float max) {
     super(min,max);
-    this.min=min; this.max=max;
     setOpaque(false);
   }
-  public void setbModeTimeOfDay() { bModeTimeOfDay=true; }
-  public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+
+  public void setbModeTimeOfDay() {
+    bModeTimeOfDay=true;
+  }
+
+  public Component getTableCellRendererComponent(JTable table, Object value,
+                                                 boolean isSelected, boolean hasFocus,
+                                                 int row, int column) {
     Float v=Float.NaN;
     if (value!=null) {
       if (value instanceof Float)
