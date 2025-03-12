@@ -4,21 +4,30 @@ import javax.swing.*;
 import java.awt.*;
 
 public class JLabel_BarChart extends JLabel {
-  float min,max,v;
-  String text;
+  protected float min,max,v;
+  protected String text;
+
   public JLabel_BarChart(float min, float max) {
     super("", Label.RIGHT);
     this.min=min;
     this.max=max;
     setHorizontalAlignment(SwingConstants.RIGHT);
   }
+
+  public void setMinMax(float min, float max) {
+    this.min=min;
+    this.max=max;
+  }
+
   public void setValue (float v) {
     this.v=v;
   }
+
   public void setText (String text) {
     super.setText(text);
     this.text=text;
   }
+
   public void paint (Graphics g) {
     //System.out.println("* v="+v);
     g.setColor(getBackground());
