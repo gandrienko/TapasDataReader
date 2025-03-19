@@ -24,6 +24,10 @@ public class CommonExplanation {
    * Additionally, if the trees were clustered, there is also the identifier of the tree cluster.
    */
   public int treeId=-1, treeCluster=-1;
+  /**
+   * Optional: any categorical attribute that must be shown in a table and can be used for filtering.
+   */
+  public String category=null;
   
   public ExplanationItem eItems[]=null;
   /**
